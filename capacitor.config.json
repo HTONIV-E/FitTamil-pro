@@ -4,17 +4,13 @@
   "webDir": "www",
   "server": {
     "androidScheme": "https",
-    "cleartext": true,
-    "allowNavigation": ["api.anthropic.com"]
+    "allowNavigation": [
+      "api.anthropic.com"
+    ]
   },
   "android": {
     "allowMixedContent": true,
     "captureInput": true,
     "webContentsDebuggingEnabled": false
-  },
-  "plugins": {
-    "CapacitorHttp": {
-      "enabled": true
-    }
   }
 }
