@@ -1,0 +1,14 @@
+{
+  "name": "fittamil-pro",
+  "version": "1.0.0",
+  "description": "FitTamil Pro - Tamil Nadu Fitness Tracker",
+  "scripts": {
+    "build": "npx cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/cli": "^5.0.0"
+  }
+}
+
