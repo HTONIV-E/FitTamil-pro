@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FitTamil">
+<meta name="theme-color" content="#0f0d0a">
+<title>FitTamil Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0d0a;--card:#1c1810;--card2:#221e14;--card3:#28221a;
+  --border:#2e2820;--border2:#3a3228;
+  --orange:#e06b20;--gold:#d4a030;--green:#3a8c52;--red:#c04030;
+  --blue:#3a78c4;--purple:#7a54c4;--teal:#2a9c8c;--pink:#c4547a;
+  --text:#f0e8d8;--muted:#8a7a60;--light:#c8b898;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:430px;margin:0 auto;}
+
+/* HEADER */
+.hdr{background:var(--card);border-bottom:1px solid var(--border);padding:10px 14px 8px;flex-shrink:0;}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--gold);}
+.hdr-r{text-align:right;}
+.hdate{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+.hstreak{font-size:11px;color:var(--orange);font-weight:600;}
+
+/* SCROLL */
+.scr{flex:1;overflow-y:auto;overflow-x:hidden;padding:10px 10px 72px;scroll-behavior:smooth;}
+.scr::-webkit-scrollbar{display:none;}
+
+/* BOTTOM NAV - scrollable */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--border);display:flex;overflow-x:auto;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.bnav::-webkit-scrollbar{display:none;}
+.nb{flex-shrink:0;min-width:58px;padding:7px 4px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:8px;font-family:'DM Mono',monospace;letter-spacing:0.3px;transition:color 0.2s;}
+.nb.active{color:var(--gold);}
+.ni{font-size:17px;}
+
+/* PAGES */
+.page{display:none;}.page.active{display:block;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;}
+.c2{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:10px;margin-bottom:7px;}
+.ct{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;}
+.sl{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1.5px;color:var(--gold);margin-bottom:7px;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.sb{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:9px 6px;text-align:center;}
+.sv{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;}
+.slb{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.5px;margin-top:1px;}
+
+/* INPUTS */
+.inp{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:5px;}
+.inp:focus{border-color:var(--gold);}
+.ilbl{font-size:10px;color:var(--muted);margin-bottom:2px;font-family:'DM Mono',monospace;letter-spacing:1px;}
+.irow{display:flex;gap:5px;margin-bottom:5px;align-items:flex-end;}
+.irow .inp{margin-bottom:0;}
+.btn{border:none;border-radius:7px;padding:8px 14px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:1px;white-space:nowrap;}
+.bo{background:var(--orange);color:#fff;}
+.bg{background:var(--green);color:#fff;}
+.bgo{background:var(--gold);color:#0f0d0a;font-weight:700;}
+.bgh{background:var(--card2);border:1px solid var(--border);color:var(--muted);}
+.bb{background:var(--blue);color:#fff;}
+.bfull{width:100%;margin-top:4px;}
+
+/* CHECKLIST */
+.ci{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.ci:last-child{border-bottom:none;}
+.ck{width:19px;height:19px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;transition:all 0.2s;}
+.ck.on{background:var(--green);border-color:var(--green);}
+.cksq{border-radius:5px;}
+.cksq.on{background:var(--orange);border-color:var(--orange);}
+.cn{flex:1;font-size:13px;font-weight:500;}
+.cm{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* PROGRESS BAR */
+.pb{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px;}
+.pf{height:100%;border-radius:3px;transition:width 0.5s;}
+
+/* WATER DROPS */
+.wg{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:6px 0;}
+.wd{font-size:19px;cursor:pointer;text-align:center;opacity:0.2;transition:all 0.2s;}
+.wd.on{opacity:1;transform:scale(1.1);}
+
+/* TOGGLE */
+.tog{width:38px;height:21px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;border:none;flex-shrink:0;transition:background 0.2s;}
+.tog.on{background:var(--green);}
+.tog::after{content:'';position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left 0.2s;}
+.tog.on::after{left:20px;}
+
+/* BAR CHART */
+.bc{display:flex;align-items:flex-end;gap:4px;height:64px;margin:6px 0;}
+.bcc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end;}
+.bcb{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:height 0.4s;}
+.bcl{font-size:8px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* PHASE BANNER */
+.phb{background:linear-gradient(135deg,var(--orange),var(--gold));border-radius:11px;padding:12px;margin-bottom:10px;color:#0f0d0a;}
+.php{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;}
+.phs{font-size:11px;font-weight:600;opacity:0.75;}
+.phpb{height:4px;background:rgba(0,0,0,0.2);border-radius:2px;margin-top:6px;}
+.phpf{height:100%;background:rgba(0,0,0,0.35);border-radius:2px;}
+
+/* QUOTE */
+.qb{background:linear-gradient(135deg,rgba(212,160,48,0.12),rgba(224,107,32,0.08));border:1px solid rgba(212,160,48,0.22);border-radius:11px;padding:12px;margin-bottom:10px;text-align:center;}
+.qt{font-size:12px;color:var(--light);line-height:1.65;font-style:italic;}
+.qa{font-size:9px;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace;}
+
+/* BADGE */
+.bw{display:flex;gap:5px;flex-wrap:wrap;}
+.bdg{border-radius:14px;padding:3px 9px;font-size:9px;font-family:'DM Mono',monospace;border:1px solid var(--border);color:var(--muted);}
+.bdg.on{border-color:var(--gold);color:var(--gold);background:rgba(212,160,48,0.08);}
+
+/* MOOD */
+.mr{display:flex;gap:5px;justify-content:space-between;margin:5px 0;}
+.mb{flex:1;padding:7px 2px;background:var(--card2);border:2px solid var(--border);border-radius:7px;text-align:center;cursor:pointer;font-size:17px;transition:all 0.2s;}
+.mb.sel{border-color:var(--gold);background:rgba(212,160,48,0.1);}
+
+/* BREATH CIRCLE */
+.brc{width:130px;height:130px;border-radius:50%;border:3px solid var(--border);margin:10px auto;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 1s ease;}
+.brph{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--gold);}
+.brn{font-size:30px;font-weight:600;}
+.brsub{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;}
+
+/* STEP RING */
+.step-ring{width:110px;height:110px;margin:8px auto;position:relative;}
+.step-ring svg{transform:rotate(-90deg);}
+.step-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.step-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green);line-height:1;}
+.step-lbl{font-size:8px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* FASTING TIMER */
+.fast-circle{width:150px;height:150px;border-radius:50%;border:4px solid var(--border);margin:10px auto;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;background:var(--card2);}
+.fast-time{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--purple);line-height:1;}
+.fast-phase{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:3px;}
+
+/* CHALLENGE */
+.chal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:8px 0;}
+.cday{aspect-ratio:1;border-radius:5px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.cday.done{background:var(--green);border-color:var(--green);color:#fff;}
+.cday.today{border-color:var(--gold);color:var(--gold);}
+.cday.missed{background:rgba(192,64,48,0.2);border-color:var(--red);color:var(--red);}
+
+/* RECIPE CARD */
+.rcard{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:11px;margin-bottom:8px;}
+.rname{font-size:14px;font-weight:600;margin-bottom:3px;}
+.rmeta{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:5px;}
+.rlist{font-size:11px;color:var(--light);line-height:1.7;}
+.rkcal{float:right;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green);}
+
+/* PHOTO JOURNAL */
+.photo-slot{background:var(--card2);border:2px dashed var(--border);border-radius:9px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;}
+.photo-slot img{width:100%;height:100%;object-fit:cover;position:absolute;}
+.photo-slot-lbl{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px;text-align:center;}
+
+/* FAMILY SHARE */
+.share-preview{background:linear-gradient(135deg,var(--card2),var(--card3));border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:8px;}
+
+/* MEAL PLAN CARD */
+.mp-day{background:var(--card2);border-radius:8px;padding:10px;margin-bottom:6px;}
+.mp-day-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:5px;}
+.mp-meal{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid var(--border);}
+.mp-meal:last-child{border-bottom:none;}
+.mp-kcal{color:var(--green);font-family:'DM Mono',monospace;font-size:11px;}
+
+/* NOTIF BAR */
+.nb-top{background:var(--orange);border-radius:9px;padding:10px 12px;margin-bottom:9px;display:flex;align-items:center;gap:9px;cursor:pointer;}
+.nb-top.gone{display:none;}
+
+/* WORKOUT HISTORY */
+.wh-entry{padding:9px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.wh-entry:last-child{border-bottom:none;}
+.wh-date{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+.wh-val{font-size:13px;font-weight:600;color:var(--orange);}
+.pb-tag{font-size:9px;background:rgba(212,160,48,0.15);color:var(--gold);border-radius:4px;padding:1px 6px;font-family:'DM Mono',monospace;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeUp 0.25s ease;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-row">
+    <div class="logo">🌿 FitTamil Pro</div>
+    <div class="hdr-r">
+      <div class="hdate" id="hDate"></div>
+      <div class="hstreak" id="hStreak">🔥 0 day streak</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCROLL -->
+<div class="scr" id="scr">
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="page active" id="pg-dash">
+  <div class="nb-top gone" id="notifBar" onclick="reqNotif()">
+    <span style="font-size:18px">🔔</span>
+    <div style="flex:1"><div style="font-size:13px;font-weight:600;">Enable Reminders</div><div style="font-size:10px;opacity:0.85;">Tap to allow daily alerts</div></div>
+    <span>›</span>
+  </div>
+  <div class="qb" id="qBox"></div>
+  <div class="phb" id="phBanner"></div>
+  <div class="sl">Today</div>
+  <div class="g4" style="margin-bottom:9px;">
+    <div class="sb"><div class="sv" style="color:var(--green)" id="dM">0/7</div><div class="slb">Meals</div></div>
+    <div class="sb"><div class="sv" style="color:var(--orange)" id="dW">0</div><div class="slb">Exercises</div></div>
+    <div class="sb"><div class="sv" style="color:var(--blue)" id="dWt">0/8</div><div class="slb">Water</div></div>
+    <div class="sb"><div class="sv" style="color:var(--gold)" id="dK">0</div><div class="slb">kcal</div></div>
+  </div>
+  <div class="card">
+    <div class="ct">BMI & Calorie Burn</div>
+    <div class="g2">
+      <div><div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:2px;">CURRENT BMI</div><div style="font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;" id="bmiV">—</div><div style="font-size:10px;" id="bmiC"></div></div>
+      <div><div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:2px;">DAILY BURN (TDEE)</div><div style="font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--orange);line-height:1;" id="tdeeV">—</div><div style="font-size:9px;color:var(--green);">Target: 1,800 kcal</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:8px;"><span style="color:var(--muted)">Ideal range</span><span style="color:var(--gold)" id="idealR">—</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;"><span style="color:var(--muted)">Still to lose</span><span style="color:var(--orange)" id="tolosD">—</span></div>
+  </div>
+  <!-- Steps today -->
+  <div class="card">
+    <div class="ct">Steps Today</div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="step-ring">
+        <svg width="110" height="110" viewBox="0 0 110 110">
+          <circle cx="55" cy="55" r="48" fill="none" stroke="var(--border)" stroke-width="8"/>
+          <circle cx="55" cy="55" r="48" fill="none" stroke="var(--green)" stroke-width="8" stroke-dasharray="301.6" id="stepArc" stroke-dashoffset="301.6" stroke-linecap="round"/>
+        </svg>
+        <div class="step-val"><div class="step-num" id="stepNum">0</div><div class="step-lbl">STEPS</div></div>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Goal: <span style="color:var(--gold);" id="stepGoalLbl">8,000</span> steps</div>
+        <div class="irow">
+          <input class="inp" id="stepInp" type="number" placeholder="Enter steps" style="margin:0;">
+          <button class="btn bo" onclick="logSteps()">+</button>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px;" id="stepMsg"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">This Week</div><div class="bc" id="wkCh"></div></div>
+  <div class="card"><div class="ct">Achievements</div><div class="bw" id="dBadges"></div></div>
+  <div class="card">
+    <div class="ct">📱 Install as App on Phone</div>
+    <div style="font-size:11px;color:var(--light);line-height:1.8;"><span style="color:var(--gold);font-weight:600;">iPhone:</span> Safari → Share → "Add to Home Screen"<br><span style="color:var(--gold);font-weight:600;">Android:</span> Chrome → ⋮ → "Add to Home Screen"</div>
+  </div>
+</div>
+
+<!-- ═══ MEALS ═══ -->
+<div class="page" id="pg-meals">
+  <div class="sl">Today's Meals</div>
+  <div class="card"><div class="ct">Tap when completed</div><div id="mList"></div></div>
+  <div class="card">
+    <div class="ct">Calories</div>
+    <div style="display:flex;align-items:baseline;gap:5px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--gold);line-height:1;" id="bigK">0</div><div style="font-size:11px;color:var(--muted);">/ 1,800 kcal</div></div>
+    <div class="pb"><div class="pf" id="kBar" style="width:0%;background:var(--green)"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px;" id="kMsg"></div>
+  </div>
+  <div class="card"><div class="ct">🎯 Belly Rules</div><div style="font-size:12px;color:var(--light);line-height:1.9;">❌ No rice after <b style="color:var(--gold)">7 PM</b> &nbsp;❌ No sugar in tea/coffee<br>✅ Dinner before <b style="color:var(--gold)">9 PM</b> &nbsp;✅ Water 30 min before meals<br>✅ Mor at lunch — every day</div></div>
+</div>
+
+<!-- ═══ MEAL PLANNER ═══ -->
+<div class="page" id="pg-plan">
+  <div class="sl">Weekly Meal Planner</div>
+  <div class="card">
+    <div class="ct">This Week's Menu</div>
+    <div style="display:flex;gap:6px;margin-bottom:10px;">
+      <button class="btn bgo" style="flex:1;" onclick="genPlan()">🔄 Generate New Plan</button>
+      <button class="btn bgh" onclick="exportPlan()">📋 Copy</button>
+    </div>
+    <div id="mPlan"></div>
+  </div>
+  <div class="card">
+    <div class="ct">🛒 Shopping List (This Week)</div>
+    <div id="shopList"></div>
+  </div>
+</div>
+
+<!-- ═══ WORKOUT ═══ -->
+<div class="page" id="pg-work">
+  <div class="sl" id="wDayL">Today's Workout</div>
+  <div class="card"><div class="ct" id="wTypeL"></div><div id="wList"></div></div>
+  <div class="card">
+    <div class="ct">Session Progress</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--orange);" id="wPct">0%</div>
+      <div style="text-align:right;"><div style="font-size:10px;color:var(--muted);" id="wCnt">0 of 0</div><div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;">EXERCISES</div></div>
+    </div>
+    <div class="pb"><div class="pf" id="wBar" style="width:0%;background:var(--orange)"></div></div>
+  </div>
+  <div class="card">
+    <div class="ct">🔥 Belly Core (Mon/Wed/Fri)</div>
+    <div id="cList"></div>
+  </div>
+  <!-- Personal Bests -->
+  <div class="card">
+    <div class="ct">🏆 Personal Bests</div>
+    <div id="pbList"></div>
+    <div style="margin-top:8px;">
+      <div class="ilbl">Log a personal best</div>
+      <div class="irow">
+        <select class="inp" id="pbExc" style="margin:0;flex:1;">
+          <option>Push-ups (max reps)</option>
+          <option>Plank (seconds)</option>
+          <option>Burpees (in 60s)</option>
+          <option>Squats (max reps)</option>
+          <option>Walk/Run (minutes)</option>
+        </select>
+        <input class="inp" id="pbVal" type="number" placeholder="Value" style="margin:0;max-width:70px;">
+        <button class="btn bo" onclick="logPB()">+</button>
+      </div>
+    </div>
+  </div>
+  <!-- Workout history -->
+  <div class="card">
+    <div class="ct">📅 Workout History (Last 10)</div>
+    <div id="wHist"></div>
+  </div>
+</div>
+
+<!-- ═══ WATER ═══ -->
+<div class="page" id="pg-water">
+  <div class="sl">Hydration</div>
+  <div class="card">
+    <div class="ct">Water — 3 Litres / 8 Glasses</div>
+    <div style="text-align:center;margin:4px 0;"><div style="font-family:'Bebas Neue',sans-serif;font-size:50px;color:var(--blue);line-height:1;" id="wCntD">0</div><div style="font-size:10px;color:var(--muted);">glasses today</div></div>
+    <div class="wg" id="wGrid"></div>
+    <div style="display:flex;gap:7px;margin-top:8px;">
+      <button class="btn bb" style="flex:1;" onclick="addW()">+ Add Glass</button>
+      <button class="btn bgh" onclick="remW()">−</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">🫙 Amla Water (Mon–Fri)</div>
+    <div class="ci" onclick="togA('a1')"><div class="ck" id="a1"></div><div class="cn">Drank amla water (1 litre throughout day)</div></div>
+    <div class="ci" onclick="togA('a2')"><div class="ck" id="a2"></div><div class="cn">Added ginger + turmeric to overnight soak</div></div>
+    <div class="ci" onclick="togA('a3')"><div class="ck" id="a3"></div><div class="cn">Ate the soaked amla pieces</div></div>
+  </div>
+  <!-- Fasting Timer -->
+  <div class="card">
+    <div class="ct">⏱ Intermittent Fasting Timer</div>
+    <div style="text-align:center;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Protocol: <span id="fastProto" style="color:var(--gold)">16:8</span> (16h fast / 8h eat)</div>
+      <div class="fast-circle" id="fastCircle">
+        <div class="fast-time" id="fastTime">16:00:00</div>
+        <div class="fast-phase" id="fastPhase">NOT STARTED</div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Eating window: <span id="fastEatW" style="color:var(--green)">—</span></div>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn bo" id="fastBtn" onclick="toggleFast()">Start Fast</button>
+        <button class="btn bgh" onclick="resetFast()">Reset</button>
+        <select class="inp" id="fastProtoSel" style="width:auto;margin:0;font-size:11px;" onchange="changeFastProto()">
+          <option value="16">16:8 (Recommended)</option>
+          <option value="14">14:10 (Beginner)</option>
+          <option value="18">18:6 (Advanced)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Hydration Schedule</div>
+    <div id="hydS"></div>
+  </div>
+</div>
+
+<!-- ═══ PROFILE ═══ -->
+<div class="page" id="pg-profile">
+  <div class="sl">Profile & Measurements</div>
+  <div class="card">
+    <div class="ct">Personal Details</div>
+    <div class="ilbl">Full Name</div><input class="inp" id="pName" placeholder="Your name" oninput="saveProf()">
+    <div class="g2">
+      <div><div class="ilbl">Age</div><input class="inp" id="pAge" type="number" placeholder="36" oninput="saveProf();calcBMI()"></div>
+      <div><div class="ilbl">Height (cm)</div><input class="inp" id="pHeight" type="number" placeholder="173" oninput="saveProf();calcBMI()"></div>
+    </div>
+    <div class="ilbl">Programme Start Date</div>
+    <input class="inp" id="pStart" type="date" oninput="saveProf();renderPhase()">
+    <button class="btn bgo bfull" onclick="saveProf();calcBMI();renderPhase();alert('Saved! ✓')">Save Profile</button>
+  </div>
+  <div class="card">
+    <div class="ct">Log Measurements</div>
+    <div class="g2">
+      <div><div class="ilbl">Weight (kg)</div><div class="irow"><input class="inp" id="mW" type="number" placeholder="83.0" step="0.1" style="margin:0;"><button class="btn bo" onclick="logM('weight')">+</button></div></div>
+      <div><div class="ilbl">Waist (cm)</div><div class="irow"><input class="inp" id="mWs" type="number" placeholder="95" step="0.5" style="margin:0;"><button class="btn bo" onclick="logM('waist')">+</button></div></div>
+      <div><div class="ilbl">Body Fat %</div><div class="irow"><input class="inp" id="mBf" type="number" placeholder="22" step="0.5" style="margin:0;"><button class="btn bo" onclick="logM('bf')">+</button></div></div>
+      <div><div class="ilbl">Heart Rate (bpm)</div><div class="irow"><input class="inp" id="mHr" type="number" placeholder="72" style="margin:0;"><button class="btn bo" onclick="logM('hr')">+</button></div></div>
+    </div>
+    <div class="ilbl">Blood Pressure</div><div class="irow"><input class="inp" id="mBp" placeholder="120/80" style="margin:0;flex:1;"><button class="btn bo" onclick="logM('bp')">+</button></div>
+    <div class="ilbl" style="margin-top:4px;">Sleep Hours</div><div class="irow"><input class="inp" id="mSl" type="number" placeholder="7.0" step="0.5" style="margin:0;flex:1;"><button class="btn bg" onclick="logM('sleep')">+</button></div>
+  </div>
+  <div class="card">
+    <div class="ct">Daily Check-in</div>
+    <div class="ilbl">Mood today</div>
+    <div class="mr" id="moodR">
+      <div class="mb" onclick="setMood('😞')">😞</div>
+      <div class="mb" onclick="setMood('😐')">😐</div>
+      <div class="mb" onclick="setMood('🙂')">🙂</div>
+      <div class="mb" onclick="setMood('😄')">😄</div>
+      <div class="mb" onclick="setMood('🤩')">🤩</div>
+    </div>
+    <div class="ilbl" style="margin-top:6px;">Energy: <span id="eL" style="color:var(--orange)">5</span>/10</div>
+    <input type="range" style="width:100%;accent-color:var(--orange);margin:4px 0;" min="1" max="10" value="5" id="eSlider" oninput="document.getElementById('eL').textContent=this.value">
+    <button class="btn bg bfull" onclick="saveCheckin()">Save Check-in</button>
+  </div>
+  <div class="card"><div class="ct">Recent Measurements</div><div id="mHist"></div></div>
+</div>
+
+<!-- ═══ PROGRESS ═══ -->
+<div class="page" id="pg-prog">
+  <div class="sl">Progress</div>
+  <div class="card">
+    <div class="ct">Weight Journey</div>
+    <div class="g4" style="margin-bottom:8px;">
+      <div class="sb"><div class="sv" style="color:var(--muted);font-size:18px;" id="pSt">83</div><div class="slb">Start</div></div>
+      <div class="sb"><div class="sv" style="color:var(--gold);font-size:18px;" id="pCu">—</div><div class="slb">Now</div></div>
+      <div class="sb"><div class="sv" style="color:var(--green);font-size:18px;" id="pLo">0</div><div class="slb">Lost</div></div>
+      <div class="sb"><div class="sv" style="color:var(--orange);font-size:18px;" id="pTg">10</div><div class="slb">To Go</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px;"><span style="color:var(--muted)">To target (73 kg)</span><span id="pPct" style="color:var(--gold)">0%</span></div>
+    <div class="pb"><div class="pf" id="pBar" style="width:0%;background:var(--gold)"></div></div>
+    <div class="bc" style="margin-top:8px;" id="wCht"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Belly / Waist Chart</div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:6px;"><span style="color:var(--muted)">Latest</span><span id="latW" style="color:var(--gold)">— cm</span><span style="color:var(--green)">Target ≤ 85 cm</span></div>
+    <div class="bc" id="wstCht" style="height:72px;"></div>
+  </div>
+  <div class="card"><div class="ct">All Stats</div><div id="statH"></div></div>
+  <div class="card">
+    <div class="ct">Sleep & HR</div>
+    <div class="g2" style="margin-bottom:6px;">
+      <div class="sb"><div class="sv" style="color:var(--purple);font-size:20px;" id="avgSl">—</div><div class="slb">Avg Sleep</div></div>
+      <div class="sb"><div class="sv" style="color:var(--teal);font-size:20px;" id="avgHr">—</div><div class="slb">Avg HR bpm</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">📋 Weekly Report</div><div id="wkRpt"></div></div>
+
+  <!-- Photo Journal -->
+  <div class="card">
+    <div class="ct">📸 Before / After Photo Journal</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Tap a slot to add a photo. Photos are stored only on your device.</div>
+    <div class="g3" id="photoGrid"></div>
+    <div style="margin-top:8px;padding:8px;background:var(--card2);border-radius:7px;font-size:10px;color:var(--muted);line-height:1.6;">
+      📅 Add a photo every 4 weeks to track your visual transformation. Take photos at the same time, same lighting for accurate comparison.
+    </div>
+    <input type="file" id="photoFile" accept="image/*" style="display:none;" onchange="loadPhoto(event)">
+  </div>
+
+  <!-- Family Share -->
+  <div class="card">
+    <div class="ct">👨‍👩‍👧 Family Progress Share</div>
+    <div class="share-preview" id="sharePreview"></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
+      <button class="btn bo" style="flex:1;" onclick="shareProgress()">📤 Share Progress</button>
+      <button class="btn bgo" style="flex:1;" onclick="exportPDF()">📄 Export PDF</button>
+    </div>
+    <div style="margin-top:6px;font-size:10px;color:var(--muted);line-height:1.6;">Share button copies a progress summary to clipboard / opens share sheet. PDF export opens a printable progress report.</div>
+  </div>
+
+  <div class="card"><div class="ct">🔔 Reminders</div><div id="remL"></div></div>
+</div>
+
+<!-- ═══ CHALLENGES ═══ -->
+<div class="page" id="pg-chal">
+  <div class="sl">Challenges</div>
+  <div class="card">
+    <div class="ct">Active Challenge</div>
+    <div id="chalActive"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Choose a Challenge</div>
+    <div style="display:flex;flex-direction:column;gap:7px;" id="chalPick"></div>
+  </div>
+  <div class="card"><div class="ct">Completed Challenges</div><div id="chalDone"></div></div>
+</div>
+
+<!-- ═══ RECIPES ═══ -->
+<div class="page" id="pg-rec">
+  <div class="sl">Tamil Recipes</div>
+  <div style="display:flex;gap:5px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;" id="recCats"></div>
+  <div id="recList"></div>
+</div>
+
+<!-- ═══ TIPS ═══ -->
+<div class="page" id="pg-tips">
+  <div class="sl">Tips & Tools</div>
+  <div class="card">
+    <div class="ct">🫁 Breathing Exercise (4-2-6)</div>
+    <div style="text-align:center;">
+      <div class="brc" id="brC"><div class="brph" id="brPh">READY</div><div class="brn" id="brN">4</div><div class="brsub">Inhale 4 · Hold 2 · Exhale 6</div></div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Cycles: <span id="brCyc" style="color:var(--gold)">0</span> / 5</div>
+      <div style="display:flex;gap:6px;justify-content:center;">
+        <button class="btn bo" id="brBtn" onclick="toggleBreath()">Start</button>
+        <button class="btn bgh" onclick="resetBreath()">Reset</button>
+      </div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">🔄 Food Swaps</div><div id="fSwaps"></div></div>
+  <div class="card"><div class="ct">💆 Recovery Tips</div><div id="recTips"></div></div>
+  <div class="card"><div class="ct">⭐ Top Recommendations</div><div id="genR"></div></div>
+</div>
+
+<!-- ═══ AI TRAINER ═══ -->
+<div class="page" id="pg-ai">
+  <div class="sl">🤖 AI Trainer</div>
+
+  <!-- Quick scan card -->
+  <div id="aiScanCard" style="background:linear-gradient(135deg,rgba(212,160,48,0.13),rgba(224,107,32,0.09));border:1px solid rgba(212,160,48,0.3);border-radius:12px;padding:14px;margin-bottom:10px;">
+    <div style="font-size:13px;font-weight:600;color:var(--gold);margin-bottom:4px;">👋 Your Personal AI Trainer</div>
+    <div style="font-size:12px;color:var(--light);line-height:1.7;">I read all your data — meals, workouts, water, measurements, mood, sleep, steps — and give you personalised daily coaching. Tap <b style="color:var(--orange)">Analyse My Day</b> for a full review, or ask me anything below.</div>
+    <button class="btn bgo" style="width:100%;margin-top:10px;font-size:12px;" onclick="aiAnalyse()">⚡ Analyse My Day Now</button>
+  </div>
+
+  <!-- Daily summary from AI -->
+  <div id="aiDailySummary" style="display:none;" class="card">
+    <div class="ct">📊 Today's Performance Review</div>
+    <div id="aiSummaryContent"></div>
+  </div>
+
+  <!-- Chat interface -->
+  <div class="card" style="padding-bottom:6px;">
+    <div class="ct">💬 Ask Your Trainer</div>
+    <div id="aiChat" style="max-height:380px;overflow-y:auto;padding-bottom:6px;display:flex;flex-direction:column;gap:8px;"></div>
+    <div style="display:flex;gap:6px;margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">
+      <input class="inp" id="aiInput" placeholder="Ask anything... e.g. Why is my belly not reducing?" style="margin:0;flex:1;" onkeydown="if(event.key==='Enter')sendAI()">
+      <button class="btn bo" onclick="sendAI()" id="aiSendBtn">Send</button>
+    </div>
+  </div>
+
+  <!-- Quick prompts -->
+  <div class="card">
+    <div class="ct">Quick Questions</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;" id="quickPrompts"></div>
+  </div>
+
+  <!-- Weekly AI insight -->
+  <div class="card" id="aiWeeklyCard">
+    <div class="ct">📈 This Week's AI Insight</div>
+    <div id="aiWeeklyContent" style="font-size:12px;color:var(--muted);">Tap Analyse to generate your weekly insight.</div>
+  </div>
+</div>
+
+</div><!-- end scr -->
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="nb active" onclick="goPg('dash',this)"><span class="ni">🏠</span>Home</button>
+  <button class="nb" onclick="goPg('meals',this)"><span class="ni">🍱</span>Meals</button>
+  <button class="nb" onclick="goPg('plan',this)"><span class="ni">📅</span>Planner</button>
+  <button class="nb" onclick="goPg('work',this)"><span class="ni">💪</span>Workout</button>
+  <button class="nb" onclick="goPg('water',this)"><span class="ni">💧</span>Water</button>
+  <button class="nb" onclick="goPg('profile',this)"><span class="ni">👤</span>Profile</button>
+  <button class="nb" onclick="goPg('prog',this)"><span class="ni">📊</span>Progress</button>
+  <button class="nb" onclick="goPg('chal',this)"><span class="ni">🏆</span>Challenges</button>
+  <button class="nb" onclick="goPg('rec',this)"><span class="ni">🥘</span>Recipes</button>
+  <button class="nb" onclick="goPg('tips',this)"><span class="ni">💡</span>Tips</button>
+  <button class="nb" onclick="goPg('ai',this)"><span class="ni">🤖</span>AI Coach</button>
+</nav>
+</div>
+
+<script>
+// ═══ STATE ═══
+const KEY='ftp_v3';
+let S={
+  meals:{},workout:{},coreW:{},water:0,amla:{},
+  streak:0,lastDate:'',weekMeals:[0,0,0,0,0,0,0],
+  steps:0,stepGoal:8000,
+  profile:{name:'',age:36,height:173,startDate:''},
+  measurements:[],checkins:[],
+  workoutHistory:[],personalBests:[],
+  photos:[null,null,null,null,null,null],
+  challenge:{active:null,days:[]},
+  completedChallenges:[],
+  fasting:{running:false,startTime:null,protocol:16},
+  reminders:{amla:true,breakfast:true,lunch:true,prework:true,postwork:true,water:true,bedtime:true},
+  mood:'',energy:5,planSeed:0,
+  notifGranted:false
+};
+function sv(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function ld(){try{const d=localStorage.getItem(KEY);if(d)S={...S,...JSON.parse(d)};}catch(e){}}
+
+// ═══ DATA ═══
+const MEALS_DATA=[
+  {id:'m1',name:'Amla water + filter kaapi',time:'6:00 AM',cal:15,occ:'Wake Up'},
+  {id:'m2',name:'Idli / Egg Dosa / Pongal + Sambar',time:'8:00 AM',cal:420,occ:'Breakfast'},
+  {id:'m3',name:'Banana + Mor / Sundal',time:'11:00 AM',cal:165,occ:'Mid-Morning'},
+  {id:'m4',name:'Rice + Kuzhambu + Poriyal + Rasam + Mor',time:'1:30 PM',cal:540,occ:'Lunch'},
+  {id:'m5',name:'Idli + Sambar / Banana + Egg',time:'4:30 PM',cal:205,occ:'Pre-Workout'},
+  {id:'m6',name:'Fish/Chicken/Egg + Chapati + Salad',time:'8:30 PM',cal:470,occ:'Dinner'},
+  {id:'m7',name:'Warm turmeric milk / Mor',time:'10:00 PM',cal:80,occ:'Bedtime'},
+];
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DAY_TYPE=['Calisthenics','Tai Chi + Walk','Calisthenics','Tai Chi','Calisthenics','Walk / Jog','Rest Day'];
+const WK_CAL=[
+  {id:'w1',name:'Warm-up (march + arm circles)',sets:'7 min'},
+  {id:'w2',name:'Push-ups',sets:'4×12'},
+  {id:'w3',name:'Jump Squats',sets:'3×15'},
+  {id:'w4',name:'Mountain Climbers',sets:'3×20s'},
+  {id:'w5',name:'Reverse Lunges',sets:'3×12 each'},
+  {id:'w6',name:'Plank Hold',sets:'3×30–60s'},
+  {id:'w7',name:'Burpees',sets:'3×8'},
+  {id:'w8',name:'Cool-down + stretch',sets:'8 min'},
+];
+const WK_TAI=[
+  {id:'t1',name:'Breathing warm-up (4-2-6)',sets:'5 min'},
+  {id:'t2',name:"Grasp the Sparrow's Tail",sets:'8 min'},
+  {id:'t3',name:'Wave Hands Like Clouds',sets:'5 min'},
+  {id:'t4',name:'Snake Creeps Down',sets:'4 min'},
+  {id:'t5',name:'Closing form + breath work',sets:'5 min'},
+];
+const WK_WALK=[
+  {id:'k1',name:'Gentle warm-up walk',sets:'5 min'},
+  {id:'k2',name:'Brisk walk / light jog',sets:'20 min'},
+  {id:'k3',name:'Intervals (1 min fast, 1 min walk)',sets:'10 min'},
+  {id:'k4',name:'Cool-down + stretch',sets:'5 min'},
+];
+const CORE=[
+  {id:'c1',name:'Lying Leg Raises 🎯',sets:'3×15'},
+  {id:'c2',name:'Bicycle Crunches 🎯',sets:'3×20'},
+  {id:'c3',name:'Dead Bug 🎯',sets:'3×10 each'},
+  {id:'c4',name:'Standing Oblique Crunches 🎯',sets:'3×15 each'},
+  {id:'c5',name:'Hollow Body Hold 🎯',sets:'3×20s'},
+];
+const HYD=[
+  {t:'6:00 AM',n:'Amla water (1st glass) + lemon water'},
+  {t:'8:30 AM',n:'After breakfast'},
+  {t:'11:00 AM',n:'With mid-morning snack'},
+  {t:'1:00 PM',n:'Before lunch'},
+  {t:'4:00 PM',n:'Pre-workout glass'},
+  {t:'6:30 PM',n:'During/after workout'},
+  {t:'8:00 PM',n:'Post-workout'},
+  {t:'9:30 PM',n:'Final glass before bedtime'},
+];
+const REMS=[
+  {id:'amla',icon:'🫙',title:'Amla Water',time:'6:00 AM',msg:'Time for amla water! Add ginger + turmeric. 🫙'},
+  {id:'breakfast',icon:'🍳',title:'Breakfast',time:'7:45 AM',msg:'Breakfast time! Idli, dosa or pongal. 🍳'},
+  {id:'lunch',icon:'🍱',title:'Lunch',time:'1:15 PM',msg:'Lunch! ½ cup rice, sambar + rasam. 🍱'},
+  {id:'water',icon:'💧',title:'Drink Water',time:'11:00 AM',msg:'Drink a glass of water now! 💧'},
+  {id:'prework',icon:'⚡',title:'Pre-Workout Snack',time:'4:15 PM',msg:'Pre-workout snack — 2 idlis + sambar or banana + egg. ⚡'},
+  {id:'postwork',icon:'💪',title:'Post-Workout Dinner',time:'8:15 PM',msg:'Dinner! Protein first — fish/chicken/egg + chapati. 💪'},
+  {id:'bedtime',icon:'🌙',title:'Bedtime Milk',time:'9:45 PM',msg:'Warm turmeric milk for anti-inflammatory sleep. 🌙'},
+];
+const QUOTES=[
+  {q:"The secret of getting ahead is getting started.",a:"Mark Twain"},
+  {q:"Take care of your body. It's the only place you have to live.",a:"Jim Rohn"},
+  {q:"நலமே வாழ்க்கை — Health is life.",a:"Tamil Proverb"},
+  {q:"It always seems impossible until it's done.",a:"Nelson Mandela"},
+  {q:"Small steps every day lead to big changes every year.",a:"FitTamil"},
+  {q:"Your body can stand almost anything. It's your mind you have to convince.",a:"Unknown"},
+  {q:"Eat well. Move daily. Sleep enough. Repeat.",a:"FitTamil"},
+  {q:"Pepper rasam a day keeps the doctor away.",a:"Tamil Kitchen Wisdom"},
+  {q:"The belly didn't appear overnight. It won't disappear overnight. But it WILL go.",a:"FitTamil"},
+  {q:"Consistency is what transforms average into excellence.",a:"Unknown"},
+  {q:"Every workout is a step away from where you were.",a:"FitTamil"},
+  {q:"Discipline is choosing between what you want now and what you want most.",a:"Unknown"},
+  {q:"Your future self will thank you for the choices you make today.",a:"FitTamil"},
+  {q:"Sweat today. Shine tomorrow.",a:"FitTamil"},
+];
+const MEAL_OPTIONS={
+  breakfast:['3 Idli + sambar + 1 boiled egg','Egg dosa (2 eggs) + tomato chutney','Pongal + sambar + mor','Ragi dosai + sambar + chutney','Pesarattu (moong dosa) + ginger chutney','Idiyappam + thin coconut milk + egg'],
+  midmorn:['Banana + mor','Channa sundal + green tea','Roasted peanuts + green tea','Guava + mor','Apple + peanut butter (1 tsp)','Boiled egg + water'],
+  lunch:['Red rice + fish kuzhambu + beans poriyal + rasam + mor','Boiled rice + chicken kuzhambu + drumstick poriyal + rasam','Curd rice + poriyal + rasam + pickle','Red rice + prawn kuzhambu + kootu + rasam','Boiled rice + mutton kuzhambu + spinach poriyal + rasam','Curd rice + aviyal + rasam'],
+  preW:['2 leftover idlis + sambar','Banana + boiled egg','Small upma + water','Roti + peanut butter','Dates (3) + water','Banana + mor'],
+  dinner:['Grilled vanjaram + 2 chapati + salad','Chicken kuzhambu + curd rice (small)','Egg kurma + 2 chapati + cucumber','Keerai masiyal + dal + 2 chapati','Grilled tilapia + 2 chapati + sabzi','Pepper chicken soup + 2 chapati'],
+  bedtime:['Warm turmeric milk (low fat)','Plain mor','Warm water + haldi','Chamomile tea','Warm water + ginger'],
+};
+const SHOP_LIST=['Red/parboiled rice','Idli/dosa batter (or rice + urad dal)','Toor dal (for sambar)','Turmeric, pepper, cumin, mustard seeds','Ginger, garlic','Tomatoes, onions','Spinach (keerai), drumstick (murungakkai)','Beans, carrots, cabbage (for poriyal)','Fish (vanjaram, tilapia, sardines)','Chicken (1 kg)','Eggs (12)','Low-fat milk','Ragi flour','Rava (semolina)','Amla (gooseberry) — 250g','Green moong (for pesarattu)','Channa (for sundal)','Bananas','Guava / papaya','Roasted peanuts (unsalted)','Chapati flour (wheat)','Sesame oil (nallennai)','Tamarind','Coconut (small)','Buttermilk (mor)'];
+const RECIPES=[
+  {cat:'Breakfast',name:'Egg Dosa',time:'15 min',kcal:385,desc:'High-protein twist on classic dosa.',ing:'Dosa batter 2 ladles · 2 eggs · Onion · Green chilli · Salt · Sesame oil 1 tsp',steps:'1. Heat tawa, pour batter. 2. Crack eggs on top, spread. 3. Add onion + chilli. 4. Cook covered 2 min. 5. Fold and serve with sambar.'},
+  {cat:'Breakfast',name:'Ragi Dosai',time:'20 min',kcal:340,desc:'Calcium-rich, high fiber — best for weight loss.',ing:'Ragi flour 1 cup · Rice flour ¼ cup · Onion · Curry leaves · Cumin · Sesame oil 1 tsp',steps:'1. Mix ragi + rice flour with water to batter. 2. Add onion, cumin, curry leaves. 3. Pour thin dosas on hot tawa. 4. Cook both sides. Serve with chutney.'},
+  {cat:'Breakfast',name:'Pesarattu',time:'20 min',kcal:360,desc:'Highest protein dosa. Made from green moong.',ing:'Green moong 1 cup (soaked overnight) · Ginger · Green chilli · Cumin · Salt',steps:'1. Grind soaked moong with ginger + chilli. 2. Make thin dosas on hot tawa. 3. Serve with ginger chutney + sambar.'},
+  {cat:'Lunch',name:'Pepper Rasam',time:'15 min',kcal:35,desc:'Daily essential. Supports lungs + digestion.',ing:'Tomato 2 · Black pepper 1 tsp · Cumin ½ tsp · Garlic 3 pods · Tamarind small ball · Curry leaves',steps:'1. Boil tamarind water + tomato. 2. Add crushed pepper + garlic + cumin. 3. Simmer 5 min. 4. Add curry leaves. Perfect with rice.'},
+  {cat:'Lunch',name:'Drumstick Sambar',time:'25 min',kcal:120,desc:'Murungakkai is extraordinary for immunity + lung health.',ing:'Toor dal ½ cup · Drumstick 2 pieces · Tomato · Sambar powder · Tamarind · Mustard seeds · Sesame oil 1 tsp',steps:'1. Pressure cook dal. 2. Boil drumstick in tamarind water. 3. Add cooked dal + sambar powder. 4. Temper mustard + curry leaves in oil.'},
+  {cat:'Lunch',name:'Fish Kuzhambu',time:'30 min',kcal:220,desc:'Vanjaram or tilapia — omega-3 rich belly fat fighter.',ing:'Fish 200g · Tomato · Chilli powder · Coriander powder · Turmeric · Sesame oil 1 tsp · Curry leaves',steps:'1. Heat oil, add mustard seeds. 2. Add tomato + spices. 3. Pour tamarind water, simmer. 4. Add fish, cook 10 min. Do NOT deep fry.'},
+  {cat:'Dinner',name:'Keerai Masiyal',time:'15 min',kcal:120,desc:'Spinach mash — iron-rich, excellent post-workout dinner.',ing:'Spinach 2 cups · Garlic 4 pods · Cumin · Green chilli · Salt · Sesame oil 1 tsp',steps:'1. Boil spinach 3 min. 2. Drain, mash well. 3. Temper cumin + garlic + chilli in oil. 4. Mix with mashed spinach. Serve with dal + chapati.'},
+  {cat:'Dinner',name:'Pepper Chicken Soup',time:'25 min',kcal:185,desc:'Clear broth — supports respiratory health + recovery.',ing:'Chicken 150g · Pepper 1 tsp · Garlic 5 pods · Ginger 1 inch · Cumin · Coriander leaves',steps:'1. Boil chicken with pepper, garlic, ginger, cumin. 2. Cook 20 min. 3. Strain and serve as clear soup. 4. Eat chicken pieces separately.'},
+  {cat:'Snacks',name:'Channa Sundal',time:'10 min',kcal:145,desc:'High protein snack from boiled chickpeas.',ing:'Boiled channa ½ cup · Mustard seeds · Curry leaves · Grated coconut 1 tbsp · Lemon · Sesame oil ½ tsp',steps:'1. Heat oil, add mustard + curry leaves. 2. Add boiled channa. 3. Mix grated coconut + lemon juice. 4. Toss and serve.'},
+  {cat:'Drinks',name:'Upgraded Amla Water',time:'5 min (overnight soak)',kcal:12,desc:'Your daily habit — upgraded for maximum benefit.',ing:'Amla 2–3 pieces (chopped) · Ginger 1 cm piece · Turmeric ½ tsp · Water 1 litre',steps:'1. Chop amla, add to 1 litre water. 2. Add ginger + turmeric. 3. Soak overnight. 4. Drink throughout the day. 5. Eat the soaked amla pieces in morning.'},
+];
+const CHALLENGES=[
+  {id:'c7',name:'7-Day No Sugar Challenge',days:7,desc:'Cut all added sugar from tea, coffee, and snacks for 7 days.',icon:'🍬',reward:'🏅 Sugar-Free Badge'},
+  {id:'c7w',name:'7-Day Daily Water Challenge',days:7,desc:'Hit 8 glasses of water every single day for 7 days.',icon:'💧',reward:'💎 Hydration Hero Badge'},
+  {id:'c21',name:'21-Day Consistency Challenge',days:21,desc:'Log meals + complete workout every day for 21 days. Build the habit.',icon:'🔥',reward:'🏆 21-Day Champion Badge'},
+  {id:'c21b',name:'21-Day Belly Blast Challenge',days:21,desc:'Do all 5 core exercises every training day for 21 days. Flatten that belly.',icon:'🎯',reward:'⭐ Belly Blast Master Badge'},
+  {id:'c30',name:'30-Day Transformation',days:30,desc:'Full programme compliance — meals, workout, water, amla — every day for 30 days.',icon:'🌟',reward:'👑 30-Day Transformation King Badge'},
+];
+const FOOD_SWAPS=[
+  {f:'White rice (2 servings)',t:'½ cup red/parboiled rice + extra sambar',s:'~300 kcal'},
+  {f:'Sweet tea × 3/day',t:'Black kaapi or green tea (no sugar)',s:'~200 kcal'},
+  {f:'Coconut milk curry',t:'Pressure-cooked kuzhambu',s:'~180 kcal'},
+  {f:'Fried fish or chicken',t:'Grilled / steamed / pressure cooked',s:'~200 kcal'},
+  {f:'Murukku / mixture snack',t:'Roasted peanuts or channa sundal',s:'~150 kcal'},
+  {f:'Fruit juice / sugarcane',t:'Whole fruit or amla water',s:'~120 kcal'},
+  {f:'Rice at dinner',t:'2 chapati at dinner',s:'~150 kcal'},
+  {f:'Ghee-heavy pongal',t:'Pongal with just ½ tsp ghee',s:'~100 kcal'},
+];
+const REC_TIPS=[
+  {i:'😴',t:'Sleep 7–8 hours',d:'Fat burning and muscle repair happens during deep sleep. Less than 6h raises cortisol — the belly fat hormone.'},
+  {i:'🌿',t:'Pepper rasam daily',d:'Natural bronchodilator + metabolism booster. Have at lunch + dinner. Only 30 kcal per cup.'},
+  {i:'🚶',t:'10-min walk after lunch',d:'Reduces blood sugar spike from rice by ~30%. Easy belly fat prevention habit.'},
+  {i:'🫙',t:'Upgrade your amla soak',d:'Add ginger + turmeric. Reduces cortisol, supports lung tissue, boosts fat metabolism.'},
+  {i:'📵',t:'No screens 30 min before sleep',d:'Blue light raises cortisol + reduces melatonin — both increase belly fat. Turmeric milk + rest instead.'},
+  {i:'🕘',t:'Eat within 45 min post-workout',d:'Muscles absorb protein best in the 45-minute window after training. Don\'t delay dinner.'},
+];
+
+// ═══ INIT ═══
+function init(){
+  ld(); checkDay(); setHdr();
+  renderMeals(); renderWorkout(); renderWater(); renderHydSched();
+  renderProfile(); renderProgress(); renderDash(); renderTips();
+  renderChallenges(); renderRecipes(); renderReminders();
+  renderPlan(); renderPhase(); calcBMI();
+  checkNotifBar(); schedRems();
+  updateFastDisplay();
+  renderSteps();
+  renderQuickPrompts();
+}
+function checkDay(){
+  const today=new Date().toDateString();
+  if(S.lastDate!==today){
+    const d=new Date();const di=d.getDay();
+    const md=Object.values(S.meals).filter(Boolean).length;
+    S.weekMeals[di]=md;
+    if(S.lastDate){const y=new Date(S.lastDate);y.setDate(y.getDate()+1);S.streak=(y.toDateString()===today&&md>=4)?S.streak+1:0;}
+    // Save workout to history
+    const dt=DAY_TYPE[di];
+    const wex=dt.includes('Tai Chi')?WK_TAI:dt.includes('Walk')?WK_WALK:dt==='Rest Day'?[]:WK_CAL;
+    const done=wex.filter(w=>S.workout[w.id]).length;
+    if(done>0){S.workoutHistory.unshift({date:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}),type:dt,done,total:wex.length,ts:Date.now()});if(S.workoutHistory.length>30)S.workoutHistory=S.workoutHistory.slice(0,30);}
+    // Reset daily
+    S.meals={};S.workout={};S.coreW={};S.water=0;S.amla={};S.steps=0;S.mood='';S.energy=5;
+    S.lastDate=today;sv();
+  }
+}
+function setHdr(){
+  const d=new Date();
+  const mos=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dns=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  document.getElementById('hDate').textContent=`${dns[d.getDay()]}, ${d.getDate()} ${mos[d.getMonth()]}`;
+  document.getElementById('hStreak').textContent=`🔥 ${S.streak} day streak`;
+}
+function goPg(n,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pg-'+n).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('scr').scrollTop=0;
+}
+function $t(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function $v(id,v){const e=document.getElementById(id);if(e)e.value=v;}
+function gv(id){const e=document.getElementById(id);return e?e.value:'';}
+
+// ═══ DASHBOARD ═══
+function renderDash(){
+  const q=QUOTES[new Date().getDate()%QUOTES.length];
+  document.getElementById('qBox').innerHTML=`<div class="qt">"${q.q}"</div><div class="qa">— ${q.a}</div>`;
+  renderPhase();calcBMI();updateSum();renderWkChart();renderBadges();renderSteps();
+}
+function renderPhase(){
+  const el=document.getElementById('phBanner');if(!el)return;
+  if(!S.profile.startDate){el.innerHTML='<div class="php">SET START DATE</div><div class="phs">Go to Profile tab ›</div>';return;}
+  const wk=Math.max(1,Math.floor((new Date()-new Date(S.profile.startDate))/(7*86400000))+1);
+  let ph,desc,pct;
+  if(wk<=4){ph='PHASE 1';desc=`Week ${wk}/4 — Foundation. Build the base.`;pct=(wk/4)*100;}
+  else if(wk<=8){ph='PHASE 2';desc=`Week ${wk}/8 — Build. Fat loss accelerating.`;pct=((wk-4)/4)*100;}
+  else if(wk<=12){ph='PHASE 3';desc=`Week ${wk}/12 — Performance. Maximum burn.`;pct=((wk-8)/4)*100;}
+  else{ph='BEYOND 12';desc='Programme complete! Start next cycle.';pct=100;}
+  el.innerHTML=`<div class="php">${ph} · Week ${Math.min(wk,12)}</div><div class="phs">${desc}</div><div class="phpb"><div class="phpf" style="width:${Math.min(100,pct)}%"></div></div>`;
+}
+function calcBMI(){
+  const h=parseFloat(gv('pHeight')||S.profile.height||173);
+  const latW=S.measurements.filter(m=>m.type==='weight').sort((a,b)=>b.ts-a.ts)[0];
+  const w=latW?latW.val:83;
+  const bmi=(w/((h/100)**2)).toFixed(1);
+  const il=(18.5*(h/100)**2).toFixed(1),ih=(24.9*(h/100)**2).toFixed(1);
+  let cat,col;
+  if(bmi<18.5){cat='Underweight';col='var(--blue)';}
+  else if(bmi<25){cat='Normal ✓';col='var(--green)';}
+  else if(bmi<30){cat='Overweight';col='var(--orange)';}
+  else{cat='Obese';col='var(--red)';}
+  const bv=document.getElementById('bmiV');if(bv){bv.textContent=bmi;bv.style.color=col;}
+  const bc=document.getElementById('bmiC');if(bc){bc.textContent=cat;bc.style.color=col;}
+  $t('idealR',`${il}–${ih} kg`);
+  $t('tolosD',`${Math.max(0,w-73).toFixed(1)} kg`);
+  const age=parseInt(S.profile.age||36);
+  const tdee=Math.round((10*w+6.25*h-5*age+5)*1.55);
+  $t('tdeeV',tdee);
+}
+function updateSum(){
+  const md=Object.values(S.meals).filter(Boolean).length;
+  const d=new Date().getDay(),dt=DAY_TYPE[d];
+  const wex=dt.includes('Tai Chi')?WK_TAI:dt.includes('Walk')?WK_WALK:dt==='Rest Day'?[]:WK_CAL;
+  const wd=wex.filter(w=>S.workout[w.id]).length;
+  const kcal=MEALS_DATA.reduce((a,m)=>a+(S.meals[m.id]?m.cal:0),0);
+  const pct=Math.min(100,(kcal/1800)*100);
+  const col=pct>100?'var(--red)':pct>80?'var(--orange)':'var(--green)';
+  $t('dM',`${md}/7`);$t('dW',wd);$t('dWt',`${S.water}/8`);$t('dK',kcal);
+  $t('bigK',kcal);
+  ['kBar'].forEach(id=>{const e=document.getElementById(id);if(e){e.style.width=pct+'%';e.style.background=col;}});
+  const km=document.getElementById('kMsg');if(km)km.textContent=kcal<1800?`${1800-kcal} kcal remaining`:'🎯 Daily target reached!';
+  document.getElementById('hStreak').textContent=`🔥 ${S.streak} day streak`;
+}
+function renderWkChart(){
+  const el=document.getElementById('wkCh');if(!el)return;
+  const t=new Date().getDay();
+  el.innerHTML=DAYS.map((d,i)=>{const v=S.weekMeals[i]||0,p=(v/7)*100,isT=i===t;return `<div class="bcc"><div class="bcb" style="height:${Math.max(3,p)}%;background:${isT?'var(--orange)':'var(--green)'};opacity:${isT?1:0.55}"></div><div class="bcl" style="color:${isT?'var(--gold)':'var(--muted)'}">${d}</div></div>`;}).join('');
+}
+function renderBadges(){
+  const md=Object.values(S.meals).filter(Boolean).length;
+  const wts=S.measurements.filter(m=>m.type==='weight');
+  const bs=[
+    {l:'🌅 First Log',on:md>=1},
+    {l:'💧 Hydrated',on:S.water>=8},
+    {l:'🔥 3-Day Streak',on:S.streak>=3},
+    {l:'💪 Week 1',on:S.streak>=7},
+    {l:'⚖️ Weighed In',on:wts.length>=1},
+    {l:'🫙 Amla Daily',on:Object.values(S.amla).filter(Boolean).length>=2},
+    {l:'🚶 Steps Goal',on:S.steps>=S.stepGoal},
+    {l:'📏 Waist Tracked',on:S.measurements.some(m=>m.type==='waist')},
+  ];
+  const el=document.getElementById('dBadges');if(!el)return;
+  el.innerHTML=bs.map(b=>`<div class="bdg ${b.on?'on':''}">${b.l}</div>`).join('');
+}
+
+// ═══ STEPS ═══
+function renderSteps(){
+  const pct=Math.min(1,S.steps/S.stepGoal);
+  const circ=301.6,off=circ*(1-pct);
+  const arc=document.getElementById('stepArc');if(arc)arc.style.strokeDashoffset=off;
+  $t('stepNum',S.steps.toLocaleString());
+  const sg=document.getElementById('stepGoalLbl');if(sg)sg.textContent=S.stepGoal.toLocaleString();
+  const sm=document.getElementById('stepMsg');
+  if(sm){const rem=Math.max(0,S.stepGoal-S.steps);sm.textContent=rem>0?`${rem.toLocaleString()} steps to goal`:'🎉 Goal reached! Great work!';}
+}
+function logSteps(){
+  const v=parseInt(gv('stepInp'));if(!v||v<0)return;
+  S.steps=Math.min(99999,S.steps+v);$v('stepInp','');sv();renderSteps();renderBadges();
+}
+
+// ═══ MEALS ═══
+function renderMeals(){
+  const el=document.getElementById('mList');if(!el)return;
+  el.innerHTML=MEALS_DATA.map(m=>{
+    const done=S.meals[m.id];
+    return `<div class="ci" onclick="togMeal('${m.id}')">
+      <div class="ck ${done?'on':''}">${done?'✓':''}</div>
+      <div style="flex:1;"><div class="cn" style="${done?'text-decoration:line-through;opacity:0.45':''}">${m.name}</div><div class="cm">${m.time} · ${m.occ}</div></div>
+      <div style="font-size:10px;color:var(--green);font-family:'DM Mono',monospace;">${m.cal}</div>
+    </div>`;}).join('');
+  updateSum();
+}
+function togMeal(id){S.meals[id]=!S.meals[id];sv();renderMeals();renderBadges();}
+
+// ═══ MEAL PLANNER ═══
+function genPlan(){
+  S.planSeed=Date.now();sv();renderPlan();
+}
+function renderPlan(){
+  const el=document.getElementById('mPlan');if(!el)return;
+  const seed=S.planSeed||1;
+  const rnd=(arr,i)=>arr[(seed+i*7)%arr.length];
+  const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  el.innerHTML=days.map((d,i)=>`
+    <div class="mp-day">
+      <div class="mp-day-lbl">${d}</div>
+      <div class="mp-meal"><span>${rnd(MEAL_OPTIONS.breakfast,i)}</span><span class="mp-kcal">~${[420,430,390,360,380,420][i%6]}</span></div>
+      <div class="mp-meal"><span>${rnd(MEAL_OPTIONS.midmorn,i)}</span><span class="mp-kcal">~165</span></div>
+      <div class="mp-meal"><span>${rnd(MEAL_OPTIONS.lunch,i)}</span><span class="mp-kcal">~540</span></div>
+      <div class="mp-meal"><span>${rnd(MEAL_OPTIONS.preW,i)}</span><span class="mp-kcal">~200</span></div>
+      <div class="mp-meal"><span>${rnd(MEAL_OPTIONS.dinner,i)}</span><span class="mp-kcal">~470</span></div>
+      <div class="mp-meal"><span>${rnd(MEAL_OPTIONS.bedtime,i)}</span><span class="mp-kcal">~80</span></div>
+    </div>`).join('');
+  // Shopping list
+  const sl=document.getElementById('shopList');
+  if(sl)sl.innerHTML=SHOP_LIST.map(i=>`<div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--light);display:flex;gap:8px;"><span>☐</span><span>${i}</span></div>`).join('');
+}
+function exportPlan(){
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  let txt='FITTAMIL - WEEKLY MEAL PLAN\n'+'='.repeat(30)+'\n';
+  days.forEach((d,i)=>{txt+=`\n${d}:\n  B: ${MEAL_OPTIONS.breakfast[i%6]}\n  L: ${MEAL_OPTIONS.lunch[i%6]}\n  D: ${MEAL_OPTIONS.dinner[i%6]}\n`;});
+  navigator.clipboard?.writeText(txt).then(()=>alert('Plan copied to clipboard! ✓')).catch(()=>alert('Copy the plan manually from the screen.'));
+}
+
+// ═══ WORKOUT ═══
+function renderWorkout(){
+  const d=new Date().getDay(),dt=DAY_TYPE[d];
+  $t('wDayL',`${DAYS[d]}'s Workout`);
+  $t('wTypeL',`${dt} — 6:00–7:30 PM`);
+  let ex=dt.includes('Tai Chi')?WK_TAI:dt.includes('Walk')?WK_WALK:dt==='Rest Day'?null:WK_CAL;
+  const wl=document.getElementById('wList');
+  if(!ex){wl.innerHTML='<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;">🌿 Rest Day — light stretch or short walk is perfect.</div>';setWPct(0,0,0);}
+  else{
+    wl.innerHTML=ex.map(w=>`<div class="ci" onclick="togW('${w.id}','workout')">
+      <div class="ck cksq ${S.workout[w.id]?'on':''}">${S.workout[w.id]?'✓':''}</div>
+      <div class="cn" style="${S.workout[w.id]?'opacity:0.4;text-decoration:line-through':''}">${w.name}</div>
+      <div class="cm">${w.sets}</div>
+    </div>`).join('');
+    const done=ex.filter(w=>S.workout[w.id]).length;
+    setWPct(done,ex.length,Math.round((done/ex.length)*100));
+  }
+  const cl=document.getElementById('cList');
+  if(cl)cl.innerHTML=CORE.map(c=>`<div class="ci" onclick="togW('${c.id}','coreW')">
+    <div class="ck cksq ${S.coreW[c.id]?'on':''}">${S.coreW[c.id]?'✓':''}</div>
+    <div class="cn" style="${S.coreW[c.id]?'opacity:0.4;text-decoration:line-through':''}">${c.name}</div>
+    <div class="cm">${c.sets}</div>
+  </div>`).join('');
+  renderWorkoutHistory();renderPBs();
+}
+function togW(id,store){S[store][id]=!S[store][id];sv();renderWorkout();updateSum();}
+function setWPct(done,total,pct){
+  $t('wPct',(pct||0)+'%');$t('wCnt',`${done} of ${total}`);
+  const b=document.getElementById('wBar');if(b)b.style.width=(pct||0)+'%';
+}
+function renderWorkoutHistory(){
+  const el=document.getElementById('wHist');if(!el)return;
+  if(!S.workoutHistory.length){el.innerHTML='<div style="font-size:11px;color:var(--muted);padding:6px;">Complete workouts to see history here.</div>';return;}
+  el.innerHTML=S.workoutHistory.slice(0,10).map(h=>`<div class="wh-entry">
+    <div><div style="font-size:12px;font-weight:500;">${h.type}</div><div class="wh-date">${h.date}</div></div>
+    <div style="text-align:right;"><div class="wh-val">${h.done}/${h.total}</div><div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;">exercises</div></div>
+  </div>`).join('');
+}
+function logPB(){
+  const exc=gv('pbExc'),val=parseFloat(gv('pbVal'));
+  if(!val||val<=0)return;
+  const existing=S.personalBests.find(p=>p.exercise===exc);
+  const isPB=!existing||val>existing.val;
+  const entry={exercise:exc,val,date:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}),ts:Date.now()};
+  S.personalBests=S.personalBests.filter(p=>p.exercise!==exc);
+  S.personalBests.unshift(entry);
+  $v('pbVal','');sv();renderPBs();
+  if(isPB)alert(`🏆 New Personal Best! ${exc}: ${val}`);
+}
+function renderPBs(){
+  const el=document.getElementById('pbList');if(!el)return;
+  if(!S.personalBests.length){el.innerHTML='<div style="font-size:11px;color:var(--muted);">Log your first personal best below!</div>';return;}
+  el.innerHTML=S.personalBests.slice(0,5).map(p=>`<div class="wh-entry">
+    <div><div style="font-size:12px;font-weight:500;">${p.exercise}</div><div class="wh-date">${p.date}</div></div>
+    <div style="text-align:right;"><div class="wh-val" style="color:var(--gold);">${p.val}</div><span class="pb-tag">BEST</span></div>
+  </div>`).join('');
+}
+
+// ═══ WATER & AMLA ═══
+function renderWater(){
+  const g=document.getElementById('wGrid');if(!g)return;
+  g.innerHTML='';
+  for(let i=0;i<8;i++){
+    const d=document.createElement('div');
+    d.className='wd '+(i<S.water?'on':'');d.textContent='💧';
+    d.onclick=()=>{S.water=i+1;sv();renderWater();updateSum();renderBadges();};
+    g.appendChild(d);
+  }
+  $t('wCntD',S.water);
+  ['a1','a2','a3'].forEach(id=>{const e=document.getElementById(id);if(!e)return;const on=S.amla[id];e.className='ck '+(on?'on':'');e.textContent=on?'✓':'';});
+}
+function addW(){if(S.water<8){S.water++;sv();renderWater();updateSum();renderBadges();}}
+function remW(){if(S.water>0){S.water--;sv();renderWater();updateSum();}}
+function togA(id){S.amla[id]=!S.amla[id];sv();renderWater();renderBadges();}
+function renderHydSched(){
+  const el=document.getElementById('hydS');if(!el)return;
+  el.innerHTML=HYD.map(h=>`<div class="ci" style="cursor:default;"><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);min-width:56px;">${h.t}</div><div style="font-size:12px;color:var(--light);">${h.n}</div></div>`).join('');
+}
+
+// ═══ FASTING TIMER ═══
+let fastInterval=null;
+function toggleFast(){
+  if(S.fasting.running){
+    S.fasting.running=false;clearInterval(fastInterval);fastInterval=null;
+    document.getElementById('fastBtn').textContent='Start Fast';
+  } else {
+    S.fasting.running=true;S.fasting.startTime=Date.now();
+    document.getElementById('fastBtn').textContent='Stop Fast';
+    fastInterval=setInterval(updateFastDisplay,1000);
+  }
+  sv();updateFastDisplay();
+}
+function resetFast(){
+  S.fasting.running=false;S.fasting.startTime=null;clearInterval(fastInterval);fastInterval=null;
+  sv();updateFastDisplay();document.getElementById('fastBtn').textContent='Start Fast';
+}
+function changeFastProto(){
+  S.fasting.protocol=parseInt(gv('fastProtoSel'));sv();updateFastDisplay();
+}
+function updateFastDisplay(){
+  const proto=S.fasting.protocol||16;
+  const eatH=24-proto;
+  $t('fastProto',`${proto}:${eatH}`);
+  const ew=document.getElementById('fastEatW');
+  if(S.fasting.startTime&&S.fasting.running){
+    const elapsed=Date.now()-S.fasting.startTime;
+    const target=proto*3600000;
+    const remaining=Math.max(0,target-elapsed);
+    const h=Math.floor(remaining/3600000);
+    const m=Math.floor((remaining%3600000)/60000);
+    const s=Math.floor((remaining%60000)/1000);
+    $t('fastTime',`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`);
+    const phase=remaining>0?'FASTING 🔒':'EATING WINDOW 🍽️';
+    $t('fastPhase',phase);
+    if(ew){const eatStart=new Date(S.fasting.startTime+target);const eatEnd=new Date(S.fasting.startTime+target+eatH*3600000);ew.textContent=`${eatStart.getHours()}:${String(eatStart.getMinutes()).padStart(2,'0')} – ${eatEnd.getHours()}:${String(eatEnd.getMinutes()).padStart(2,'0')}`;}
+    if(remaining===0)showNotif('FitTamil','🍽️ Fasting complete! Your eating window is now open.');
+  } else {
+    $t('fastTime',`${proto}:00:00`);$t('fastPhase','NOT STARTED');
+    if(ew)ew.textContent='—';
+  }
+}
+
+// ═══ PROFILE ═══
+function renderProfile(){
+  if(S.profile.name)$v('pName',S.profile.name);
+  if(S.profile.age)$v('pAge',S.profile.age);
+  if(S.profile.height)$v('pHeight',S.profile.height);
+  if(S.profile.startDate)$v('pStart',S.profile.startDate);
+  if(S.mood)document.querySelectorAll('.mb').forEach(b=>b.classList.toggle('sel',b.textContent===S.mood));
+  const es=document.getElementById('eSlider');const el=document.getElementById('eL');
+  if(es)es.value=S.energy||5;if(el)el.textContent=S.energy||5;
+  renderMHist();
+}
+function saveProf(){
+  S.profile.name=gv('pName');S.profile.age=parseInt(gv('pAge'))||36;
+  S.profile.height=parseInt(gv('pHeight'))||173;S.profile.startDate=gv('pStart');
+  sv();renderPhase();calcBMI();
+}
+function setMood(m){S.mood=m;sv();document.querySelectorAll('.mb').forEach(b=>b.classList.toggle('sel',b.textContent===m));}
+function saveCheckin(){
+  S.energy=parseInt(gv('eSlider')||5);
+  const e={ts:Date.now(),date:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}),mood:S.mood,energy:S.energy};
+  S.checkins=S.checkins.filter(c=>c.date!==e.date);S.checkins.unshift(e);
+  if(S.checkins.length>30)S.checkins=S.checkins.slice(0,30);
+  sv();alert('Check-in saved! ✓');
+}
+function logM(type){
+  let val,disp;
+  if(type==='bp'){val=gv('mBp');disp=val;if(!val)return;$v('mBp','');}
+  else{
+    const ids={weight:'mW',waist:'mWs',bf:'mBf',hr:'mHr',sleep:'mSl'};
+    val=parseFloat(gv(ids[type]));if(!val||val<0)return;
+    const units={weight:'kg',waist:'cm',bf:'%',hr:'bpm',sleep:'h'};
+    disp=val+' '+(units[type]||'');$v(ids[type],'');
+  }
+  const e={ts:Date.now(),date:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}),type,val,display:disp};
+  S.measurements.unshift(e);if(S.measurements.length>100)S.measurements=S.measurements.slice(0,100);
+  sv();renderMHist();renderProgress();calcBMI();renderBadges();
+}
+function renderMHist(){
+  const el=document.getElementById('mHist');if(!el)return;
+  if(!S.measurements.length){el.innerHTML='<div style="font-size:11px;color:var(--muted);padding:6px 0;">No measurements yet.</div>';return;}
+  const icons={weight:'⚖️',waist:'📏',bf:'💪',bp:'❤️',hr:'💓',sleep:'😴'};
+  el.innerHTML=S.measurements.slice(0,8).map(m=>`<div class="ci" style="cursor:default;">
+    <div style="font-size:17px;width:26px;">${icons[m.type]||'📊'}</div>
+    <div style="flex:1;"><div style="font-size:12px;font-weight:500;">${m.display||m.val}</div><div class="cm">${m.type.toUpperCase()} · ${m.date}</div></div>
+  </div>`).join('');
+}
+
+// ═══ PROGRESS ═══
+function renderProgress(){
+  const wts=S.measurements.filter(m=>m.type==='weight').sort((a,b)=>b.ts-a.ts);
+  const waists=S.measurements.filter(m=>m.type==='waist').sort((a,b)=>b.ts-a.ts);
+  const sleeps=S.measurements.filter(m=>m.type==='sleep').sort((a,b)=>b.ts-a.ts);
+  const hrs=S.measurements.filter(m=>m.type==='hr').sort((a,b)=>b.ts-a.ts);
+  const sw=83,tw=73,cw=wts.length?wts[0].val:sw;
+  const lost=Math.max(0,sw-cw).toFixed(1),toGo=Math.max(0,cw-tw).toFixed(1);
+  const pct=Math.min(100,Math.max(0,((sw-cw)/(sw-tw))*100));
+  $t('pSt',sw);$t('pCu',cw.toFixed?cw.toFixed(1):cw);$t('pLo',lost);$t('pTg',toGo);
+  $t('pPct',pct.toFixed(0)+'%');
+  const pb=document.getElementById('pBar');if(pb)pb.style.width=pct+'%';
+  renderBarChart('wCht',wts.slice(0,7).reverse(),'val','var(--gold)');
+  renderBarChart('wstCht',waists.slice(0,7).reverse(),'val','var(--orange)');
+  $t('latW',waists.length?waists[0].val+' cm':'— cm');
+  const avgSl=sleeps.length?(sleeps.slice(0,7).reduce((a,x)=>a+x.val,0)/Math.min(7,sleeps.length)).toFixed(1):'—';
+  const avgH=hrs.length?(hrs.slice(0,7).reduce((a,x)=>a+x.val,0)/Math.min(7,hrs.length)).toFixed(0):'—';
+  $t('avgSl',avgSl);$t('avgHr',avgH);
+  renderStatHistory();renderWkReport();renderSharePreview();renderPhotoGrid();
+}
+function renderBarChart(id,data,key,color){
+  const el=document.getElementById(id);if(!el)return;
+  if(!data||data.length<2){el.innerHTML='<div style="font-size:10px;color:var(--muted);padding:6px;">Log measurements to see chart</div>';return;}
+  const vals=data.map(d=>d[key]);
+  const mn=Math.min(...vals)-1,mx=Math.max(...vals)+1;
+  el.innerHTML=data.map(d=>{const p=((d[key]-mn)/(mx-mn))*100;return `<div class="bcc"><div class="bcb" style="height:${Math.max(3,p)}%;background:${color}"></div><div class="bcl">${d.date?d.date.split(' ')[0]:''}</div></div>`;}).join('');
+}
+function renderStatHistory(){
+  const el=document.getElementById('statH');if(!el)return;
+  const types=['weight','waist','bf','bp','hr','sleep'];
+  const labels={weight:'⚖️ Weight',waist:'📏 Waist',bf:'💪 Body Fat',bp:'❤️ Blood Pressure',hr:'💓 Heart Rate',sleep:'😴 Sleep'};
+  el.innerHTML=types.map(t=>{const l=S.measurements.filter(m=>m.type===t).sort((a,b)=>b.ts-a.ts)[0];return `<div class="ci" style="cursor:default;"><div style="flex:1;font-size:12px;color:var(--light);">${labels[t]}</div><div style="font-size:12px;color:var(--gold);font-family:'DM Mono',monospace;">${l?l.display||l.val:'—'}</div></div>`;}).join('');
+}
+function renderWkReport(){
+  const el=document.getElementById('wkRpt');if(!el)return;
+  const wts=S.measurements.filter(m=>m.type==='weight').sort((a,b)=>b.ts-a.ts);
+  const waists=S.measurements.filter(m=>m.type==='waist').sort((a,b)=>b.ts-a.ts);
+  const sleeps=S.measurements.filter(m=>m.type==='sleep');
+  const avg=(arr,k)=>arr.length?(arr.slice(0,7).reduce((a,x)=>a+x[k],0)/Math.min(7,arr.length)).toFixed(1):'—';
+  const wc=wts.length>=2?(wts[0].val-wts[1].val).toFixed(1):null;
+  el.innerHTML=`
+    <div class="g2" style="margin-bottom:7px;">
+      <div class="sb"><div class="sv" style="font-size:18px;color:var(--green)">${avg(S.checkins,'energy')}</div><div class="slb">Avg Energy</div></div>
+      <div class="sb"><div class="sv" style="font-size:18px;color:var(--purple)">${avg(sleeps,'val')}h</div><div class="slb">Avg Sleep</div></div>
+    </div>
+    ${wc!==null?`<div style="padding:8px;background:var(--card2);border-radius:7px;font-size:12px;margin-bottom:5px;">Weight change: <span style="color:${wc<0?'var(--green)':'var(--red)'};font-weight:600;">${wc>0?'+':''}${wc} kg</span></div>`:''}
+    ${waists.length?`<div style="padding:8px;background:var(--card2);border-radius:7px;font-size:12px;">Waist: <span style="color:${waists[0].val<=85?'var(--green)':'var(--orange)'};font-weight:600;">${waists[0].val} cm</span> ${waists[0].val<=85?'✓ At target!':'(Target ≤ 85 cm)'}</div>`:''}
+    ${!wts.length?'<div style="font-size:11px;color:var(--muted);">Log measurements in Profile tab to see your weekly report.</div>':''}
+  `;
+}
+
+// ═══ PHOTO JOURNAL ═══
+let activePhotoSlot=0;
+function renderPhotoGrid(){
+  const el=document.getElementById('photoGrid');if(!el)return;
+  const labels=['Week 1','Week 4','Week 8','Week 12','Month 6','Final'];
+  el.innerHTML=labels.map((l,i)=>`
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <div class="photo-slot" onclick="openPhoto(${i})">
+        ${S.photos[i]?`<img src="${S.photos[i]}" alt="${l}">`:'<div style="font-size:24px">📷</div>'}
+      </div>
+      <div class="photo-slot-lbl">${l}</div>
+    </div>`).join('');
+}
+function openPhoto(i){activePhotoSlot=i;document.getElementById('photoFile').click();}
+function loadPhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{S.photos[activePhotoSlot]=ev.target.result;sv();renderPhotoGrid();};
+  r.readAsDataURL(file);
+  e.target.value='';
+}
+
+// ═══ FAMILY SHARE & PDF ═══
+function renderSharePreview(){
+  const el=document.getElementById('sharePreview');if(!el)return;
+  const wts=S.measurements.filter(m=>m.type==='weight').sort((a,b)=>b.ts-a.ts);
+  const waists=S.measurements.filter(m=>m.type==='waist').sort((a,b)=>b.ts-a.ts);
+  const cw=wts.length?wts[0].val:83;
+  const lost=Math.max(0,83-cw).toFixed(1);
+  el.innerHTML=`
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">🌿 ${S.profile.name||'My'} Transformation Progress</div>
+    <div class="g2">
+      <div style="font-size:12px;color:var(--light);"><div style="color:var(--muted);font-size:10px;font-family:'DM Mono',monospace;">CURRENT WEIGHT</div><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);">${cw} kg</div></div>
+      <div style="font-size:12px;color:var(--light);"><div style="color:var(--muted);font-size:10px;font-family:'DM Mono',monospace;">LOST SO FAR</div><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--green);">${lost} kg</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px;">🔥 ${S.streak}-day streak · 💧 Water habit · 🫙 Amla daily</div>
+    ${waists.length?`<div style="font-size:11px;color:var(--teal);margin-top:3px;">📏 Waist: ${waists[0].val} cm → Target: ≤ 85 cm</div>`:''}`;
+}
+function shareProgress(){
+  const wts=S.measurements.filter(m=>m.type==='weight').sort((a,b)=>b.ts-a.ts);
+  const cw=wts.length?wts[0].val:83;
+  const lost=Math.max(0,83-cw).toFixed(1);
+  const txt=`🌿 FitTamil Progress Update\n\nName: ${S.profile.name||'—'}\nCurrent weight: ${cw} kg\nLost so far: ${lost} kg\nTarget: 73 kg\nStreak: ${S.streak} days 🔥\n\nTracking meals, workout, water & belly measurements daily with FitTamil Pro!`;
+  if(navigator.share){navigator.share({title:'FitTamil Progress',text:txt}).catch(()=>{});}
+  else{navigator.clipboard?.writeText(txt).then(()=>alert('Progress copied to clipboard! Share it with your family. ✓')).catch(()=>alert(txt));}
+}
+function exportPDF(){
+  const wts=S.measurements.filter(m=>m.type==='weight').sort((a,b)=>b.ts-a.ts);
+  const waists=S.measurements.filter(m=>m.type==='waist').sort((a,b)=>b.ts-a.ts);
+  const cw=wts.length?wts[0].val:83;
+  const lost=Math.max(0,83-cw).toFixed(1);
+  const html=`<!DOCTYPE html><html><head><title>FitTamil Progress Report</title>
+  <style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;color:#1a1208;}
+  h1{color:#d4a030;border-bottom:2px solid #e06b20;padding-bottom:8px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:20px 0;}
+  .box{background:#f8f4ec;border:1px solid #e0ccb0;border-radius:8px;padding:14px;text-align:center;}
+  .val{font-size:28px;font-weight:700;color:#e06b20;}
+  .lbl{font-size:11px;color:#8a7a60;margin-top:3px;}
+  table{width:100%;border-collapse:collapse;margin:16px 0;}
+  th{background:#1a1208;color:#d4a030;padding:8px;text-align:left;}
+  td{padding:7px;border-bottom:1px solid #e0ccb0;}
+  .footer{margin-top:30px;font-size:11px;color:#8a7a60;text-align:center;}
+  </style></head><body>
+  <h1>🌿 FitTamil — Progress Report</h1>
+  <p>Name: <b>${S.profile.name||'—'}</b> &nbsp;|&nbsp; Generated: ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</p>
+  <div class="grid">
+    <div class="box"><div class="val">83 kg</div><div class="lbl">Start Weight</div></div>
+    <div class="box"><div class="val">${cw} kg</div><div class="lbl">Current Weight</div></div>
+    <div class="box"><div class="val">${lost} kg</div><div class="lbl">Lost So Far</div></div>
+    <div class="box"><div class="val">73 kg</div><div class="lbl">Target</div></div>
+    <div class="box"><div class="val">${waists.length?waists[0].val+' cm':'—'}</div><div class="lbl">Current Waist</div></div>
+    <div class="box"><div class="val">${S.streak}</div><div class="lbl">Day Streak 🔥</div></div>
+  </div>
+  <h2>Measurement History</h2>
+  <table><tr><th>Date</th><th>Type</th><th>Value</th></tr>
+  ${S.measurements.slice(0,20).map(m=>`<tr><td>${m.date}</td><td>${m.type}</td><td>${m.display||m.val}</td></tr>`).join('')}
+  </table>
+  <h2>Workout History</h2>
+  <table><tr><th>Date</th><th>Type</th><th>Completed</th></tr>
+  ${S.workoutHistory.slice(0,10).map(h=>`<tr><td>${h.date}</td><td>${h.type}</td><td>${h.done}/${h.total} exercises</td></tr>`).join('')}
+  </table>
+  <div class="footer">Generated by FitTamil Pro · 12-Week Tamil Nadu Transformation Programme · Target: 73 kg</div>
+  </body></html>`;
+  const w=window.open('','_blank');
+  if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);}
+  else alert('Please allow pop-ups to export PDF, then tap Export PDF again.');
+}
+
+// ═══ CHALLENGES ═══
+function renderChallenges(){
+  const el=document.getElementById('chalActive');
+  const cp=document.getElementById('chalPick');
+  const cd=document.getElementById('chalDone');
+  if(el){
+    if(!S.challenge.active){el.innerHTML='<div style="font-size:12px;color:var(--muted);">No active challenge. Pick one below to start!</div>';}
+    else{
+      const ch=CHALLENGES.find(c=>c.id===S.challenge.active);
+      const done=S.challenge.days.filter(Boolean).length;
+      const pct=Math.round((done/ch.days)*100);
+      const today=new Date().toDateString();
+      const todayIdx=(new Date()-new Date(S.challenge.startDate||Date.now()))/86400000|0;
+      el.innerHTML=`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div><div style="font-size:14px;font-weight:600;">${ch.icon} ${ch.name}</div><div style="font-size:10px;color:var(--muted);">${done}/${ch.days} days · ${pct}%</div></div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);">${pct}%</div>
+        </div>
+        <div class="pb"><div class="pf" style="width:${pct}%;background:var(--orange)"></div></div>
+        <div class="chal-grid" style="margin-top:10px;">
+          ${Array.from({length:ch.days},(_, i)=>{
+            const st=i<done?'done':i===todayIdx?'today':i<todayIdx?'missed':'';
+            return `<div class="cday ${st}" onclick="markChalDay(${i})">${i+1}</div>`;
+          }).join('')}
+        </div>
+        <div style="display:flex;gap:6px;margin-top:8px;">
+          <button class="btn bg" style="flex:1;" onclick="markChalDay(${todayIdx})">✓ Mark Today Done</button>
+          <button class="btn bgh" onclick="endChallenge()">End</button>
+        </div>`;
+    }
+  }
+  if(cp){
+    cp.innerHTML=CHALLENGES.map(c=>{
+      const done=S.completedChallenges.includes(c.id);
+      return `<div class="c2" style="display:flex;align-items:center;gap:10px;">
+        <div style="font-size:28px;">${c.icon}</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;">${c.name}</div><div style="font-size:11px;color:var(--muted);">${c.days} days · ${c.desc}</div><div style="font-size:10px;color:var(--gold);margin-top:2px;">${c.reward}</div></div>
+        <button class="btn ${done?'bgh':'bo'}" onclick="startChallenge('${c.id}')">${done?'Redo':'Start'}</button>
+      </div>`;}).join('');
+  }
+  if(cd){cd.innerHTML=S.completedChallenges.length?S.completedChallenges.map(id=>{const c=CHALLENGES.find(x=>x.id===id);return c?`<div style="padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;display:flex;gap:8px;"><span>${c.icon}</span><span style="color:var(--gold);">${c.name} — ${c.reward}</span></div>`:''}).join(''):'<div style="font-size:11px;color:var(--muted);">Complete a challenge to see it here.</div>';}
+}
+function startChallenge(id){
+  if(S.challenge.active){if(!confirm('Replace current challenge?'))return;}
+  S.challenge={active:id,days:Array(CHALLENGES.find(c=>c.id===id).days).fill(false),startDate:new Date().toISOString()};
+  sv();renderChallenges();
+}
+function markChalDay(i){
+  if(!S.challenge.active)return;
+  S.challenge.days[i]=!S.challenge.days[i];sv();
+  const ch=CHALLENGES.find(c=>c.id===S.challenge.active);
+  if(S.challenge.days.every(Boolean)){
+    S.completedChallenges.push(S.challenge.active);
+    S.challenge={active:null,days:[]};
+    alert(`🏆 Challenge Complete! ${ch.reward} earned!`);
+  }
+  sv();renderChallenges();
+}
+function endChallenge(){if(confirm('End this challenge?')){S.challenge={active:null,days:[]};sv();renderChallenges();}}
+
+// ═══ RECIPES ═══
+let recCat='All';
+function renderRecipes(){
+  const cats=['All',...new Set(RECIPES.map(r=>r.cat))];
+  const cc=document.getElementById('recCats');
+  if(cc)cc.innerHTML=cats.map(c=>`<button onclick="setRecCat('${c}',this)" style="flex-shrink:0;padding:6px 14px;border-radius:16px;border:1px solid ${c===recCat?'var(--orange)':'var(--border)'};background:${c===recCat?'rgba(224,107,32,0.15)':'var(--card2)'};color:${c===recCat?'var(--orange)':'var(--muted)'};font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;">${c}</button>`).join('');
+  const rl=document.getElementById('recList');
+  if(!rl)return;
+  const filtered=recCat==='All'?RECIPES:RECIPES.filter(r=>r.cat===recCat);
+  rl.innerHTML=filtered.map(r=>`
+    <div class="rcard">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div><div class="rname">${r.name}</div><div class="rmeta">${r.cat} · ⏱ ${r.time}</div></div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--green);line-height:1;">${r.kcal}<div style="font-size:8px;color:var(--muted);font-family:'DM Mono',monospace;">KCAL</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:5px;font-style:italic;">${r.desc}</div>
+      <div style="font-size:11px;color:var(--gold);margin-bottom:3px;font-family:'DM Mono',monospace;letter-spacing:1px;">INGREDIENTS</div>
+      <div class="rlist">${r.ing}</div>
+      <div style="font-size:11px;color:var(--gold);margin:5px 0 3px;font-family:'DM Mono',monospace;letter-spacing:1px;">METHOD</div>
+      <div class="rlist">${r.steps}</div>
+    </div>`).join('');
+}
+function setRecCat(c){recCat=c;renderRecipes();}
+
+// ═══ TIPS ═══
+function renderTips(){
+  const fs=document.getElementById('fSwaps');
+  if(fs)fs.innerHTML=FOOD_SWAPS.map(s=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start;">
+    <div style="font-size:12px;color:var(--red);flex:1;">✗ ${s.f}</div>
+    <div>→</div>
+    <div style="flex:1;"><div style="font-size:12px;color:var(--green);">✓ ${s.t}</div><div style="font-size:9px;color:var(--green);font-family:'DM Mono',monospace;">Save ${s.s}</div></div>
+  </div>`).join('');
+  const rt=document.getElementById('recTips');
+  if(rt)rt.innerHTML=REC_TIPS.map(r=>`<div style="padding:9px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start;">
+    <div style="font-size:20px;width:26px;">${r.i}</div>
+    <div><div style="font-size:12px;font-weight:600;margin-bottom:2px;">${r.t}</div><div style="font-size:11px;color:var(--light);line-height:1.6;">${r.d}</div></div>
+  </div>`).join('');
+  const gr=document.getElementById('genR');
+  if(gr)gr.innerHTML=[
+    {i:'🥘',t:'Upgrade your amla soak',d:'Add ginger + turmeric. Multiplies anti-inflammatory and belly fat reduction benefits significantly.'},
+    {i:'📏',t:'Measure waist weekly',d:'Waist circumference shows belly fat progress even when the scale is slow. Measure every Monday morning.'},
+    {i:'💊',t:'Consider Vitamin D supplement',d:'Most Indians are deficient — affects fat metabolism and energy. Ask your doctor about supplementation.'},
+    {i:'🌿',t:'Rasam at every meal',d:'Pepper rasam — 30 kcal, supports respiratory health, digestion, metabolism. Non-negotiable daily habit.'},
+  ].map(r=>`<div style="padding:9px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><div style="font-size:20px;width:26px;">${r.i}</div><div><div style="font-size:12px;font-weight:600;margin-bottom:2px;">${r.t}</div><div style="font-size:11px;color:var(--light);line-height:1.6;">${r.d}</div></div></div>`).join('');
+}
+
+// ═══ BREATHING ═══
+let brTimer=null,brRunning=false,brPhIdx=0,brCnt=0,brCyc=0;
+const BR_PH=[{n:'INHALE',d:4,c:'var(--blue)',sc:'scale(1.22)'},{n:'HOLD',d:2,c:'var(--gold)',sc:'scale(1.22)'},{n:'EXHALE',d:6,c:'var(--teal)',sc:'scale(1)'}];
+function toggleBreath(){
+  if(brRunning){clearInterval(brTimer);brRunning=false;document.getElementById('brBtn').textContent='Resume';}
+  else{brRunning=true;document.getElementById('brBtn').textContent='Pause';runBreath();}
+}
+function runBreath(){
+  const ph=BR_PH[brPhIdx];$t('brPh',ph.n);brCnt=ph.d;$t('brN',brCnt);
+  const c=document.getElementById('brC');if(c){c.style.transform=ph.sc;c.style.borderColor=ph.c;}
+  clearInterval(brTimer);
+  brTimer=setInterval(()=>{brCnt--;$t('brN',Math.max(0,brCnt));if(brCnt<=0){clearInterval(brTimer);brPhIdx=(brPhIdx+1)%3;if(brPhIdx===0){brCyc++;$t('brCyc',brCyc);if(brCyc>=5){resetBreath();showNotif('FitTamil','🫁 5 breathing cycles complete! Well done.');return;}}if(brRunning)runBreath();}},1000);
+}
+function resetBreath(){clearInterval(brTimer);brRunning=false;brPhIdx=0;brCnt=0;brCyc=0;$t('brPh','READY');$t('brN',4);$t('brCyc',0);document.getElementById('brBtn').textContent='Start';const c=document.getElementById('brC');if(c){c.style.transform='scale(1)';c.style.borderColor='var(--border)';}}
+
+// ═══ REMINDERS ═══
+function renderReminders(){
+  const el=document.getElementById('remL');if(!el)return;
+  el.innerHTML=REMS.map(r=>`<div class="ci" style="cursor:default;">
+    <div style="font-size:18px;width:26px;">${r.icon}</div>
+    <div style="flex:1;"><div style="font-size:12px;font-weight:500;">${r.title}</div><div class="cm">${r.time}</div></div>
+    <button class="tog ${S.reminders[r.id]?'on':''}" id="rt-${r.id}" onclick="togRem('${r.id}')"></button>
+  </div>`).join('');
+}
+function togRem(id){S.reminders[id]=!S.reminders[id];sv();const b=document.getElementById('rt-'+id);if(b)b.className='tog '+(S.reminders[id]?'on':'');schedRems();}
+function checkNotifBar(){if(!('Notification'in window)||Notification.permission==='granted')document.getElementById('notifBar')?.classList.add('gone');}
+function reqNotif(){
+  if(!('Notification'in window)){alert('Install the app on your home screen first for notifications!');return;}
+  Notification.requestPermission().then(p=>{if(p==='granted'){S.notifGranted=true;sv();document.getElementById('notifBar')?.classList.add('gone');showNotif('FitTamil Pro 🌿',"You're all set! Daily reminders enabled. 💪");schedRems();}});
+}
+function showNotif(t,b){if(Notification.permission==='granted')new Notification(t,{body:b,icon:'🌿'});}
+function schedRems(){
+  if(Notification.permission!=='granted')return;
+  if(window._rts)window._rts.forEach(clearTimeout);window._rts=[];
+  const now=new Date();
+  REMS.forEach(r=>{
+    if(!S.reminders[r.id])return;
+    const p=r.time.split(':');let h=parseInt(p[0]),m=parseInt(p[1]);
+    const t=new Date(now);t.setHours(h,m,0,0);if(t<=now)t.setDate(t.getDate()+1);
+    window._rts.push(setTimeout(()=>showNotif('FitTamil — '+r.title,r.msg),t-now));
+  });
+}
+
+// ═══════════════════════════════
+// AI TRAINER
+// ═══════════════════════════════
+const AI_QUICK_PROMPTS = [
+  "Why is my belly not reducing?",
+  "Am I eating enough protein?",
+  "How is my sleep affecting progress?",
+  "What should I eat before workout?",
+  "Review my water intake",
+  "How is my streak looking?",
+  "What's my biggest weakness right now?",
+  "Give me motivation for today",
+  "Is my calorie intake correct?",
+  "What should I focus on this week?",
+];
+
+function buildUserContext() {
+  // Collect ALL data from all tabs
+  const d = new Date();
+  const dayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()];
+  const mealsDone = Object.values(S.meals).filter(Boolean).length;
+  const mealNames = MEALS_DATA.filter(m => S.meals[m.id]).map(m => m.name);
+  const totalKcal = MEALS_DATA.reduce((a,m) => a + (S.meals[m.id] ? m.cal : 0), 0);
+  const dayType = DAY_TYPE[d.getDay()];
+  const wEx = dayType.includes('Tai Chi') ? WK_TAI : dayType.includes('Walk') ? WK_WALK : dayType === 'Rest Day' ? [] : WK_CAL;
+  const workoutDone = wEx.filter(w => S.workout[w.id]).length;
+  const coreDone = CORE.filter(c => S.coreW[c.id]).length;
+  const amlaDone = Object.values(S.amla).filter(Boolean).length;
+
+  // Latest measurements
+  const latestW = S.measurements.filter(m=>m.type==='weight').sort((a,b)=>b.ts-a.ts)[0];
+  const latestWaist = S.measurements.filter(m=>m.type==='waist').sort((a,b)=>b.ts-a.ts)[0];
+  const latestBf = S.measurements.filter(m=>m.type==='bf').sort((a,b)=>b.ts-a.ts)[0];
+  const latestHr = S.measurements.filter(m=>m.type==='hr').sort((a,b)=>b.ts-a.ts)[0];
+  const latestSleep = S.measurements.filter(m=>m.type==='sleep').sort((a,b)=>b.ts-a.ts)[0];
+  const latestBp = S.measurements.filter(m=>m.type==='bp').sort((a,b)=>b.ts-a.ts)[0];
+  const recentWeights = S.measurements.filter(m=>m.type==='weight').sort((a,b)=>b.ts-a.ts).slice(0,5);
+  const recentWaists = S.measurements.filter(m=>m.type==='waist').sort((a,b)=>b.ts-a.ts).slice(0,5);
+  const weightTrend = recentWeights.length >= 2 ? (recentWeights[0].val - recentWeights[1].val).toFixed(1) : null;
+  const waistTrend = recentWaists.length >= 2 ? (recentWaists[0].val - recentWaists[1].val).toFixed(1) : null;
+
+  // Week summary
+  const weekTotal = S.weekMeals.reduce((a,v)=>a+v,0);
+  const activeChallenge = S.challenge.active ? CHALLENGES.find(c=>c.id===S.challenge.active) : null;
+  const challengeDays = S.challenge.days ? S.challenge.days.filter(Boolean).length : 0;
+
+  // Recent checkins
+  const recentCheckin = S.checkins[0];
+  const avgEnergy = S.checkins.length ? (S.checkins.slice(0,7).reduce((a,c)=>a+(c.energy||5),0)/Math.min(7,S.checkins.length)).toFixed(1) : null;
+
+  // Phase
+  let phase = 'Not started', week = 0;
+  if (S.profile.startDate) {
+    week = Math.max(1, Math.floor((new Date() - new Date(S.profile.startDate))/(7*86400000))+1);
+    phase = week<=4 ? 'Phase 1 (Foundation)' : week<=8 ? 'Phase 2 (Build)' : week<=12 ? 'Phase 3 (Performance)' : 'Post-12 weeks';
+  }
+
+  return `
+You are Coach Tamil, a warm, expert personal fitness and nutrition coach specialising in Tamil Nadu / South Indian diet and lifestyle. You are knowledgeable, encouraging, direct, and personalised. You speak naturally — not like a robot. You know this person well.
+
+HERE IS ALL THE USER'S CURRENT DATA — use every relevant piece to give hyper-personalised advice:
+
+PERSONAL PROFILE:
+- Name: ${S.profile.name || 'not set'}
+- Age: ${S.profile.age || 36} years
+- Height: ${S.profile.height || 173} cm
+- Programme start date: ${S.profile.startDate || 'not set'}
+- Current phase: ${phase} (Week ${week})
+- Streak: ${S.streak} days
+
+CURRENT MEASUREMENTS:
+- Current weight: ${latestW ? latestW.val + ' kg' : 'not logged yet'}
+- Start weight: 83 kg | Target: 73 kg
+- Weight trend (last 2 logs): ${weightTrend !== null ? (weightTrend < 0 ? weightTrend+' kg (losing ✓)' : weightTrend > 0 ? '+'+weightTrend+' kg (gaining ⚠️)' : 'stable') : 'not enough data'}
+- Waist: ${latestWaist ? latestWaist.val + ' cm (target: ≤85 cm)' : 'not logged'}
+- Waist trend: ${waistTrend !== null ? (waistTrend < 0 ? waistTrend+' cm (reducing ✓)' : '+'+waistTrend+' cm (increasing ⚠️)') : 'not enough data'}
+- Body fat %: ${latestBf ? latestBf.val + '%' : 'not logged'}
+- Resting heart rate: ${latestHr ? latestHr.val + ' bpm' : 'not logged'}
+- Blood pressure: ${latestBp ? latestBp.val : 'not logged'}
+- Last sleep: ${latestSleep ? latestSleep.val + ' hours' : 'not logged'}
+- Average energy (last 7 days): ${avgEnergy || 'not enough data'}/10
+- Today's mood: ${S.mood || 'not logged'}
+
+TODAY (${dayName}):
+- Meals completed: ${mealsDone}/7
+- Meals eaten: ${mealNames.length ? mealNames.join(', ') : 'none yet'}
+- Calories consumed: ${totalKcal} / 1800 kcal target
+- Today's workout type: ${dayType}
+- Workout exercises done: ${workoutDone}/${wEx.length}
+- Belly core exercises done: ${coreDone}/5
+- Water glasses: ${S.water}/8
+- Amla water habits today: ${amlaDone}/3 (${S.amla.a1?'drank':'not drank'}, ${S.amla.a2?'added ginger+turmeric':'no upgrade'}, ${S.amla.a3?'ate pieces':'discarded pieces'})
+- Steps today: ${S.steps} / ${S.stepGoal} goal
+- Fasting: ${S.fasting.running ? 'Currently fasting ('+S.fasting.protocol+':'+( 24-S.fasting.protocol)+' protocol)' : 'Not fasting today'}
+
+THIS WEEK:
+- Meals logged per day: ${S.weekMeals.map((v,i)=>DAYS[i]+':'+v).join(', ')}
+- Total meals logged this week: ${weekTotal}/49 possible
+
+ACTIVE CHALLENGE:
+- ${activeChallenge ? activeChallenge.name + ' ('+challengeDays+'/'+activeChallenge.days+' days done)' : 'No active challenge'}
+- Completed challenges: ${S.completedChallenges.length ? S.completedChallenges.map(id=>{const c=CHALLENGES.find(x=>x.id===id);return c?c.name:'';}).join(', ') : 'none yet'}
+
+PERSONAL BESTS:
+${S.personalBests.length ? S.personalBests.map(p=>p.exercise+': '+p.val).join('\n') : 'None logged yet'}
+
+RECENT WORKOUT HISTORY:
+${S.workoutHistory.slice(0,5).map(h=>h.date+': '+h.type+' ('+h.done+'/'+h.total+')').join('\n') || 'None yet'}
+
+DIET CONTEXT:
+- Tamil Nadu / South Indian diet
+- Evening workout (6–8 PM)
+- Has belly fat as primary concern
+- Drinks 1 litre amla water (chopped amla soaked overnight) Mon–Fri — upgraded with ginger + turmeric
+
+COACHING RULES:
+- Be warm, direct, and conversational — like a knowledgeable friend
+- Give specific, actionable advice based on the data above
+- Reference their actual numbers when relevant (e.g. "your waist is X cm, target is 85")
+- Keep responses concise but complete — use bullet points for recommendations
+- Celebrate wins genuinely, flag concerns constructively
+- Do NOT mention smoking or alcohol
+- Focus on Tamil foods and Tamil lifestyle where relevant
+- Always end with one clear priority action for them to do right now or today
+`.trim();
+}
+
+function renderQuickPrompts() {
+  const el = document.getElementById('quickPrompts'); if (!el) return;
+  el.innerHTML = AI_QUICK_PROMPTS.map(q =>
+    `<button onclick="askQuick('${q.replace(/'/g,"\\'")}',this)" style="padding:6px 11px;border-radius:14px;border:1px solid var(--border);background:var(--card2);color:var(--light);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border)'">${q}</button>`
+  ).join('');
+}
+
+function askQuick(q) {
+  document.getElementById('aiInput').value = q;
+  sendAI();
+}
+
+function addChatMsg(role, text, isLoading=false) {
+  const chat = document.getElementById('aiChat');
+  const isUser = role === 'user';
+  const div = document.createElement('div');
+  div.style.cssText = `display:flex;flex-direction:column;align-items:${isUser?'flex-end':'flex-start'};`;
+  div.innerHTML = `
+    <div style="max-width:88%;background:${isUser?'var(--orange)':'var(--card2)'};border:1px solid ${isUser?'var(--orange)':'var(--border)'};border-radius:${isUser?'12px 12px 3px 12px':'12px 12px 12px 3px'};padding:10px 12px;">
+      ${!isUser ? '<div style="font-size:9px;color:var(--gold);font-family:\'DM Mono\',monospace;letter-spacing:1px;margin-bottom:4px;">🤖 COACH TAMIL</div>' : ''}
+      <div style="font-size:12px;color:${isUser?'#fff':'var(--light)'};line-height:1.7;" id="${isLoading?'aiLoading':''}">${isLoading ? '<span style="opacity:0.6">Analysing your data...</span>' : text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^• /gm,'<br>• ')}</div>
+    </div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return div;
+}
+
+async function sendAI() {
+  const input = document.getElementById('aiInput');
+  const question = input.value.trim();
+  if (!question) return;
+  input.value = '';
+  const sendBtn = document.getElementById('aiSendBtn');
+  sendBtn.disabled = true; sendBtn.textContent = '...';
+
+  addChatMsg('user', question);
+  const loadingDiv = addChatMsg('ai', '', true);
+
+  try {
+    const systemPrompt = buildUserContext();
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: question }]
+      })
+    });
+    const data = await response.json();
+    const reply = data.content?.[0]?.text || 'Sorry, I could not get a response. Please try again.';
+    loadingDiv.remove();
+    addChatMsg('ai', reply);
+  } catch(e) {
+    loadingDiv.remove();
+    addChatMsg('ai', '⚠️ Could not connect to AI. Please check your internet connection and try again.');
+  }
+  sendBtn.disabled = false; sendBtn.textContent = 'Send';
+}
+
+async function aiAnalyse() {
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = '⏳ Analysing...';
+
+  const summaryEl = document.getElementById('aiDailySummary');
+  const summaryContent = document.getElementById('aiSummaryContent');
+  summaryEl.style.display = 'block';
+  summaryContent.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">Reading all your data and generating your daily review...</div>';
+
+  try {
+    const systemPrompt = buildUserContext();
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{
+          role: 'user',
+          content: 'Give me a full daily performance review. Score my day out of 10 for: meals, workout, hydration, and overall wellness. Then give me 3 specific things I did well today, 3 things to improve, and 1 single most important action I should do RIGHT NOW. Be direct, warm, and specific using my actual numbers.'
+        }]
+      })
+    });
+    const data = await response.json();
+    const reply = data.content?.[0]?.text || 'Could not generate analysis.';
+    summaryContent.innerHTML = `<div style="font-size:12px;color:var(--light);line-height:1.8;">${reply.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<b style="color:var(--gold)">$1</b>').replace(/^• /gm,'<br>• ')}</div>`;
+
+    // Also generate weekly insight
+    const weekResp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 600,
+        system: systemPrompt,
+        messages: [{
+          role: 'user',
+          content: 'Based on my data this week, give me: 1 trend you notice, 1 warning sign if any, and 1 specific recommendation to improve next week. Keep it to 3 short paragraphs.'
+        }]
+      })
+    });
+    const wData = await weekResp.json();
+    const wReply = wData.content?.[0]?.text || '';
+    const wEl = document.getElementById('aiWeeklyContent');
+    if (wEl) wEl.innerHTML = `<div style="font-size:12px;color:var(--light);line-height:1.8;">${wReply.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<b style="color:var(--gold)">$1</b>')}</div>`;
+
+  } catch(e) {
+    summaryContent.innerHTML = '<div style="color:var(--red);font-size:12px;">⚠️ Could not connect to AI. Check your internet and try again.</div>';
+  }
+  btn.disabled = false; btn.textContent = '⚡ Analyse My Day Now';
+}
+
+// ═══ START ═══
+init();
+setInterval(schedRems,3600000);
+if(S.fasting.running)setInterval(updateFastDisplay,1000);
+</script>
+</body>
+</html>
