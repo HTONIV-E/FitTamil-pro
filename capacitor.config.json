@@ -5,7 +5,7 @@
   "server": {
     "androidScheme": "https",
     "allowNavigation": [
-      "api.anthropic.com"
+      "generativelanguage.googleapis.com"
     ]
   },
   "android": {
