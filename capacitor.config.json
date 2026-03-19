@@ -3,14 +3,17 @@
   "appName": "FitTamil AI",
   "webDir": "www",
   "server": {
-    "androidScheme": "https",
-    "allowNavigation": [
-      "generativelanguage.googleapis.com"
-    ]
+    "androidScheme": "https"
   },
   "android": {
     "allowMixedContent": true,
     "captureInput": true,
     "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "Keyboard": {
+      "resize": "body",
+      "style": "dark"
+    }
   }
 }
